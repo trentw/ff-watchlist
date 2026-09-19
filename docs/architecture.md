@@ -1,0 +1,29 @@
+# Architecture
+
+FF Watchlist is a Python 3.12+ FastAPI application packaged under `src/ff_watchlist`. The current slice is intentionally small: a deterministic watchlist core, source and lineup adapters, media handling, a public response boundary, and a static HTML/CSS/JavaScript client.
+
+## Module boundaries
+
+- `watch_core` owns the domain model and watchlist decisions. It should remain deterministic and straightforward to test.
+- `watch_lineup` translates lineup or roster inputs into the domain model. It must not make presentation decisions.
+- `watch_sources` contains provider adapters and provenance metadata. Network access belongs here and is optional at runtime.
+- `watch_media` handles image and media references, including rights metadata and safe fallbacks.
+- `watch_public` is the FastAPI-facing boundary: request parsing, response models, and route composition. It should call existing domain calculations instead of reimplementing them.
+- `src/ff_watchlist/watch_public_static/` is the browser surface. It consumes public responses and should degrade gracefully when no provider data is available.
+
+## Data flow
+
+```text
+provider/source -> sources -> lineup -> watch_core -> public -> static client
+                                      \-> media metadata -/
+```
+
+The application should be usable with deterministic fixtures and no network. Provider integrations therefore need explicit boundaries, timeouts, and provenance; a missing or unavailable source should produce a clear degraded result rather than fabricated data.
+
+## Rights and publication
+
+The repository's MIT license covers project code and original assets only. Undocumented Sleeper RotoWire projections and ESPN imagery are not licensed by that grant. They may be used in local experiments while publication rules are unresolved, but must not be treated as distributable project data or static assets.
+
+## Tooling
+
+Development uses uv, pytest, and Ruff (`E9` and `F`). The `uv run ff-watchlist` entry point defaults to `127.0.0.1:8793`; `--demo` is synthetic and fully offline. Install opt-in hooks through `scripts/install_hooks.py`: pre-commit checks tracked-file hygiene, Ruff, and offline pytest, while commit-msg rejects AI co-author trailers and permits human co-authors. `scripts/check.py` is the local aggregate check. No CI is required for this slice. Private planning notes belong in ignored `PROJECT-PLAN.md` and `.local/`, not in the public architecture document.

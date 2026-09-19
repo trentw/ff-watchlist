@@ -1,0 +1,29 @@
+[project]
+name = "ff-watchlist"
+version = "0.1.0"
+description = "A fantasy football guide to which games to watch"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "MIT"
+license-files = ["LICENSE", "THIRD_PARTY.md"]
+dependencies = ["fastapi>=0.141.1", "httpx>=0.28.1", "uvicorn>=0.52.4"]
+
+[project.scripts]
+ff-watchlist = "ff_watchlist.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.10.3,<0.11.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = ["pytest>=9.1.1", "ruff>=0.15.0"]
+
+[tool.ruff.lint]
+select = ["E9", "F"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.uv.build-backend]
+source-include = ["AGENTS.md", "CLAUDE.md", "CONTRIBUTING.md", "CHANGELOG.md", "docs/**", "tests/**", "scripts/**", "uv.lock", ".githooks/**", ".gitignore", ".editorconfig"]
+source-exclude = ["PROJECT-PLAN.md", ".local/**", "data/**", ".venv/**"]

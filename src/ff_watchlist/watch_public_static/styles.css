@@ -1,0 +1,120 @@
+:root{font-family:Arial,Helvetica,sans-serif;color:#efe8d5;background:#29251f;font-size:16px;line-height:1.5;--ink:#242a23;--paper:#f2eddf;--muted:#acae9d;--line:#697460;--accent:#f0c466;--red:#b13d28;--field:#284d38}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#4c4435 0,transparent 70%)}
+main{max-width:1400px;margin:auto;padding:26px 32px 40px}
+.masthead{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:25px 28px;background:#1d2521;border:1px solid #817c67;border-top:5px solid #d6c49a;box-shadow:0 6px 0 #171c19,0 12px 24px #0003;margin-bottom:28px}
+.eyebrow,.panel-kicker,.slot-title{font-family:'Courier New',monospace;font-size:.8rem;letter-spacing:.09em;font-weight:bold}
+.eyebrow{color:#d9be7c}
+h1{font-family:Impact,'Arial Narrow',sans-serif;font-weight:900;font-size:clamp(2.5rem,4.8vw,4rem);letter-spacing:-.015em;text-transform:uppercase;line-height:1.05;margin:10px 0 8px;text-shadow:2px 3px 0 #0005}
+h1 em{font-style:normal;color:#ebba59}
+.brand p{margin:0;color:#c1c6b6;font-size:.95rem}
+.scoreboard{display:flex;gap:22px;padding:16px 22px;border:2px solid #665f4a;background:#121917;box-shadow:inset 0 0 16px #0008;flex-shrink:0;text-align:center}
+.scoreboard span{display:block;color:#d6d0bb;letter-spacing:.13em;font-size:.7rem;font-weight:700}
+.scoreboard strong{font-family:'Courier New',monospace;font-size:1.7rem;line-height:1.5;color:#fac35f;font-weight:400;text-shadow:0 0 10px #ffb42938}
+.workspace{display:grid;grid-template-columns:330px minmax(0,1fr);gap:25px}
+.controls{align-self:start;background:var(--paper);border:1px solid #fff8;border-radius:3px;padding:24px;color:var(--ink);box-shadow:0 5px 0 #b9ad90,0 10px 20px #0003}
+.panel-kicker{display:flex;justify-content:space-between;color:#8c402d;font-size:.7rem;border-bottom:2px solid #aca68d;padding-bottom:12px;margin-bottom:16px}
+h2{font-family:Georgia,serif;font-size:1.65rem;margin:0 0 18px;line-height:1.2}
+h3{margin:0;font-size:1.05rem}
+label{display:block;font-size:.875rem;font-weight:bold}
+textarea,input,select{width:100%;background:#fffdf5;color:var(--ink);border:1px solid #a5a68f;border-radius:2px;padding:10px;font:inherit;margin-top:7px;box-shadow:inset 0 2px 3px #00000009}
+textarea{resize:vertical;min-height:96px;font: .875rem/1.8 'Courier New',monospace;background:repeating-linear-gradient(#fffdf5 0,#fffdf5 24px,#e4e4d8 24px,#e4e4d8 25px);background-position:0 12px}
+textarea:focus,input:focus,select:focus,button:focus-visible,summary:focus-visible{outline:3px solid #cc8d26;outline-offset:3px}
+.hint{font-size:.8rem;color:#636855;margin:10px 0 18px;line-height:1.55}
+.fields{display:grid;grid-template-columns:1fr .65fr 1.3fr;gap:8px}
+.fields input,.fields select{padding:8px 6px;font-size:.875rem}
+button{font:inherit;font-weight:bold;background:var(--red);color:#fff6df;border:1px solid #813021;border-radius:3px;padding:13px 15px;cursor:pointer;box-shadow:0 4px 0 #762d20;transition:transform .12s,background .12s}
+button:hover{background:#c4472f}
+button:active{transform:translateY(2px);box-shadow:0 2px 0 #762d20}
+button:disabled{opacity:.6;cursor:wait}
+#submit{margin-top:20px;width:100%;display:flex;justify-content:space-between}
+.power-dot{color:#f9d68c;text-shadow:0 0 7px #ffd37088}
+.secondary{background:transparent;color:inherit;border:1px solid #8b937b;box-shadow:none;font-size:.8rem;padding:8px 12px}
+.secondary:hover{background:#898a7025}
+.secondary:active{box-shadow:none}
+#example{width:100%;margin-top:14px}
+details{margin-top:20px}
+summary{cursor:pointer;font-size:.875rem;color:#5e644f}
+.result-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #81947488;padding-bottom:14px;margin-bottom:12px}
+.result-heading h2{margin:6px 0 0;font-size:1.9rem}
+.result-heading .eyebrow{font-size:.7rem;color:#ddd5b3}
+.results{padding:24px;background-color:var(--field);background-image:repeating-linear-gradient(0deg,transparent 0,transparent 79px,#e8f1cf0b 80px,#e8f1cf0b 81px);border:7px solid #ada78b;border-radius:4px;box-shadow:0 0 0 1px #e0d3b4,inset 0 0 0 2px #132e20,0 6px 0 #6a6854;min-width:0}
+#status{color:#d6dec9;margin:0 0 22px;font-size:.8rem;line-height:1.6}
+.notice{padding:12px 16px;border-left:4px solid #ca962f;background:#fff0c8;color:#55401a;margin-bottom:16px;font-size:.875rem}
+.notice ul{padding-left:20px;margin:8px 0}
+.slot{margin:24px 0 32px}
+.slot-title{display:flex;align-items:center;gap:12px;color:#e8e4cc;font-size:.85rem;text-transform:uppercase;margin-bottom:13px}
+.slot-title:after{content:'';height:1px;background:#aeb99870;flex:1}
+.game{background:#ececdd;color:var(--ink);border:1px solid #e8e5d6;border-radius:3px;margin:9px 0;padding:16px;box-shadow:0 3px 0 #122e2477;overflow:hidden}
+.game.featured{border-top:4px solid #e6b651;background:#faf6e9}
+.game-strip{display:flex;justify-content:space-between;color:#81652a;letter-spacing:.08em;text-transform:uppercase;font:bold .66rem 'Courier New',monospace;margin-bottom:12px}
+.game-head{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.matchup-title{display:flex;align-items:center;gap:8px}
+.team-badge{display:inline-flex;align-items:center;gap:7px;font-family:Impact,'Arial Narrow',sans-serif;font-weight:700;font-size:1.6rem;letter-spacing:.03em}
+.versus{font-family:Georgia,serif;color:#7f826f;font-style:italic;font-size:.9rem}
+.team-logo{width:36px;height:36px;object-fit:contain}
+.kick,.bench,.empty{color:#67715d;font-size:.8rem}
+.kick{margin-top:5px}
+.points{text-align:right;flex-shrink:0;font-variant-numeric:tabular-nums;padding-left:12px;border-left:1px solid #bbc0a7}
+.points strong{font-family:'Courier New',monospace;font-size:1.85rem;font-weight:bold;color:#b5482c;line-height:1.1}
+.points small{display:block;color:#67715d;font-size:.65rem}
+.players{list-style:none;margin:14px 0 0;padding:0;border-top:1px solid #c8ccb9}
+.player{display:flex;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid #d9dccd;font-size:.9rem}
+.portrait{width:46px;height:48px;flex-shrink:0;position:relative;background:#dbe0cf;border-bottom:5px solid var(--team-color,#5c7657);border-radius:3px 3px 0 0;overflow:hidden;display:grid;place-items:center}
+.portrait .number{font:bold 1.05rem 'Courier New',monospace;color:#3c513b}
+.headshot{width:100%;height:100%;object-fit:cover;object-position:center top;position:absolute;inset:0}
+.player-info{min-width:0}
+.player-name{font-weight:bold;display:block}
+.player .meta{color:#69725e;font-size:.75rem;display:block;margin-top:1px}
+.player .value{margin-left:auto;font: bold 1.05rem 'Courier New',monospace;color:#364c38}
+.bench-label{font:bold .7rem 'Courier New',monospace;letter-spacing:.04em;color:#6d7561;margin:16px 0 0;text-transform:uppercase}
+.bench .player-name{font-weight:normal}
+.bench .portrait{filter:saturate(.5)}
+.emptygame{background:#d7dfce;padding:11px 16px;box-shadow:none}
+.emptygame .points strong{font-size:1.2rem;color:#6e7d63}
+.emptygame .team-badge{font-family:Arial,sans-serif;font-size:.9rem}
+.emptygame .team-logo{width:23px;height:23px}
+.emptygame .empty{margin:4px 0 0}
+.emptygame .kick{font-size:.75rem}
+.field-empty{min-height:430px;position:relative;border:2px solid #b8c4a276;margin:6px 0;background:repeating-linear-gradient(0deg,transparent 0,transparent 84px,#c3cda34d 84px,#c3cda34d 86px);display:grid;place-items:center;text-align:center;overflow:hidden}
+.yard-numbers{position:absolute;left:14px;top:0;bottom:0;display:flex;flex-direction:column-reverse;justify-content:space-around;font:bold 1.4rem 'Courier New',monospace;color:#c0c8a284}
+.empty-message{background:#284d38ed;padding:24px;max-width:310px}
+.empty-message h3{font:italic bold 2.2rem/1.1 Georgia,serif;margin:14px 0;color:#eee9cf}
+.empty-message p{color:#cad3b7;font-size:.9rem}
+.empty-message .eyebrow{font-size:.7rem}
+footer{margin-top:30px;padding-top:16px;border-top:1px solid #776e58;color:#c2bca8;font-size:.75rem}
+a{color:#eac374}
+[hidden]{display:none!important}
+@media(max-width:1050px){main{padding:20px}
+.scoreboard{gap:12px;padding:12px}
+.scoreboard strong{font-size:1.35rem}
+.workspace{grid-template-columns:290px minmax(0,1fr);gap:18px}
+.controls,.results{padding:18px}
+.team-badge{font-size:1.25rem}
+.team-logo{width:30px;height:30px}
+}
+@media(max-width:780px){.masthead{flex-wrap:wrap;padding:20px}
+.scoreboard{width:100%;justify-content:space-around}
+.workspace{grid-template-columns:1fr;gap:24px}
+.controls{padding:22px}
+.results{border-width:5px}
+h1{font-size:2.6rem}
+.field-empty{min-height:280px}
+}
+@media(max-width:430px){main{padding:14px}
+.results{padding:14px}
+.game{padding:12px}
+.team-badge{font-size:1.1rem;gap:4px}
+.team-logo{width:25px;height:25px}
+.points{padding-left:8px}
+.points strong{font-size:1.4rem}
+.points small{font-size:.6rem}
+.matchup-title{gap:5px}
+.player{gap:8px}
+.result-heading h2{font-size:1.5rem}
+.portrait{width:40px;height:44px}
+.player-name{font-size:.8rem}
+}
+
+@media(prefers-reduced-motion:reduce){button{transition:none}
+}
