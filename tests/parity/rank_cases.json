@@ -112,7 +112,6 @@
           "team": "CIN",
           "pos": "WR",
           "slot": "WR",
-          "yahoo_id": null,
           "proj": 11.0,
           "jersey": null
          }
@@ -133,7 +132,6 @@
           "team": "MIN",
           "pos": "WR",
           "slot": "BN",
-          "yahoo_id": null,
           "proj": 7.0,
           "jersey": null
          }
@@ -158,7 +156,6 @@
           "team": "GB",
           "pos": "RB",
           "slot": "BN",
-          "yahoo_id": null,
           "proj": 9.0,
           "jersey": null
          }
@@ -178,7 +175,6 @@
           "team": "KC",
           "pos": "TE",
           "slot": "IR",
-          "yahoo_id": null,
           "proj": 9.0,
           "jersey": null
          }
@@ -320,7 +316,6 @@
           "team": "KC",
           "pos": "QB",
           "slot": "QB",
-          "yahoo_id": null,
           "proj": 21.4,
           "jersey": null
          }
@@ -340,7 +335,6 @@
           "team": "GB",
           "pos": "RB",
           "slot": "RB",
-          "yahoo_id": null,
           "proj": 12.0,
           "jersey": null
          }
@@ -510,7 +504,6 @@
           "team": "CIN",
           "pos": "WR",
           "slot": "WR",
-          "yahoo_id": null,
           "proj": null,
           "jersey": null
          },
@@ -519,7 +512,6 @@
           "team": "CIN",
           "pos": "RB",
           "slot": "RB",
-          "yahoo_id": null,
           "proj": 0.0,
           "jersey": null
          }
@@ -539,7 +531,6 @@
           "team": "CHI",
           "pos": "K",
           "slot": "K",
-          "yahoo_id": null,
           "proj": null,
           "jersey": null
          },
@@ -548,7 +539,6 @@
           "team": "MIN",
           "pos": "DST",
           "slot": "DEF",
-          "yahoo_id": null,
           "proj": -2.0,
           "jersey": null
          }
@@ -573,7 +563,6 @@
           "team": "DET",
           "pos": "TE",
           "slot": "TE",
-          "yahoo_id": null,
           "proj": null,
           "jersey": null
          }
@@ -593,7 +582,6 @@
           "team": "DEN",
           "pos": "WR",
           "slot": "WR",
-          "yahoo_id": null,
           "proj": null,
           "jersey": null
          }
@@ -627,7 +615,6 @@
       "team": "CIN",
       "pos": "WR",
       "slot": "WR",
-      "yahoo_id": null,
       "proj": null,
       "jersey": null
      },
@@ -636,7 +623,6 @@
       "team": "CHI",
       "pos": "K",
       "slot": "K",
-      "yahoo_id": null,
       "proj": null,
       "jersey": null
      },
@@ -645,7 +631,6 @@
       "team": "DET",
       "pos": "TE",
       "slot": "TE",
-      "yahoo_id": null,
       "proj": null,
       "jersey": null
      },
@@ -654,7 +639,6 @@
       "team": "DEN",
       "pos": "WR",
       "slot": "WR",
-      "yahoo_id": null,
       "proj": null,
       "jersey": null
      }
@@ -792,7 +776,6 @@
           "team": "CIN",
           "pos": "WR",
           "slot": "WR",
-          "yahoo_id": null,
           "proj": 14.2,
           "jersey": null
          },
@@ -801,7 +784,6 @@
           "team": "TB",
           "pos": "K",
           "slot": "K",
-          "yahoo_id": null,
           "proj": 7.7,
           "jersey": null
          }
@@ -821,7 +803,6 @@
           "team": "JAX",
           "pos": "DST",
           "slot": "DEF",
-          "yahoo_id": null,
           "proj": 6.5,
           "jersey": null
          }
@@ -856,7 +837,6 @@
           "team": "DET",
           "pos": "WR",
           "slot": "WR",
-          "yahoo_id": null,
           "proj": 12.1,
           "jersey": null
          }
@@ -891,7 +871,6 @@
           "team": "PHI",
           "pos": "RB",
           "slot": "RB",
-          "yahoo_id": null,
           "proj": 10.0,
           "jersey": null
          }
@@ -1019,7 +998,6 @@
           "team": "KC",
           "pos": "QB",
           "slot": "QB",
-          "yahoo_id": null,
           "proj": null,
           "jersey": null
          }
@@ -1053,7 +1031,6 @@
       "team": "KC",
       "pos": "QB",
       "slot": "QB",
-      "yahoo_id": null,
       "proj": null,
       "jersey": null
      }
@@ -1193,7 +1170,6 @@
           "team": "DAL",
           "pos": "QB",
           "slot": "QB",
-          "yahoo_id": null,
           "proj": 19.5,
           "jersey": null
          }
@@ -1211,7 +1187,6 @@
       "team": "SEA",
       "pos": "WR",
       "slot": "WR",
-      "yahoo_id": null,
       "proj": 13.0,
       "jersey": null
      }
@@ -1324,7 +1299,6 @@
           "team": "BUF",
           "pos": "K",
           "slot": "K",
-          "yahoo_id": null,
           "proj": 8.0,
           "jersey": null
          }
@@ -1349,7 +1323,6 @@
           "team": "JAX",
           "pos": "WR",
           "slot": "WR",
-          "yahoo_id": null,
           "proj": 12.5,
           "jersey": null
          }
@@ -1374,7 +1347,6 @@
           "team": "PHI",
           "pos": "RB",
           "slot": "RB",
-          "yahoo_id": null,
           "proj": 16.0,
           "jersey": null
          }
@@ -1399,7 +1371,6 @@
           "team": "LAC",
           "pos": "QB",
           "slot": "QB",
-          "yahoo_id": null,
           "proj": 18.2,
           "jersey": null
          }
@@ -1498,7 +1469,6 @@
           "team": "CIN",
           "pos": "WR",
           "slot": "WR",
-          "yahoo_id": null,
           "proj": 10.0,
           "jersey": null
          }
@@ -1518,7 +1488,6 @@
           "team": "CHI",
           "pos": "WR",
           "slot": "WR",
-          "yahoo_id": null,
           "proj": 10.0,
           "jersey": null
          }

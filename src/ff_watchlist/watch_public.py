@@ -1,8 +1,7 @@
-"""Small public API for the lineup based watch demo.
+"""HTTP API for the watchlist.
 
-This module deliberately knows nothing about the private personal watch
-command.  The public app only accepts a lineup supplied by the visitor and
-uses the public source and pure ranking contracts.
+Accepts a lineup supplied by the visitor, resolves it against the source
+adapters and returns the core's ranking. Nothing from a request is stored.
 """
 
 from __future__ import annotations
@@ -74,7 +73,7 @@ def _json_value(value: Any) -> Any:
 def _as_player(row: dict[str, Any]) -> Player:
     """Create a core Player while tolerating parser-added optional fields."""
 
-    allowed = {"name", "team", "pos", "slot", "jersey", "proj", "yahoo_id"}
+    allowed = {"name", "team", "pos", "slot", "jersey", "proj"}
     values = {k: row[k] for k in allowed if k in row}
     values.setdefault("slot", "START")
     # The parser contract uses ``pos``.  Keeping this guard makes a malformed
