@@ -73,6 +73,14 @@ def _validate(players: dict[str, Any], schedule: list[Any], rows: list[Any], *, 
             raise InvalidBundle(f"only {projected} players have {column} projections")
 
 
+def _credit(projections: dict[str, Any]) -> str:
+    """Short credit line shown beside every projected number."""
+    if projections.get("source") == "sleeper":
+        provider = projections.get("provider")
+        return f"Projections: Sleeper / {provider}" if provider else "Projections: Sleeper"
+    return str(projections.get("attribution") or projections.get("source") or "Projections")
+
+
 def _write(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, separators=(",", ":"), ensure_ascii=False) + "\n", encoding="utf-8")
 
@@ -97,7 +105,7 @@ def write_bundle(sources: Any, out_dir: Path, *, season: int | None = None, week
         "demo": demo,
         "projections": {
             "source": projections.get("source"),
-            "attribution": projections.get("attribution"),
+            "attribution": _credit(projections),
             "fetched_at": projections.get("fetched_at"),
         },
         "media": {"headshots": headshots and not demo, "logos": logos and not demo},
@@ -112,6 +120,7 @@ def write_bundle(sources: Any, out_dir: Path, *, season: int | None = None, week
         _write(staged / "schedule.json", schedule)
         _write(staged / "projections.json", rows)
         _write(staged / "manifest.json", manifest)
+        staged.chmod(0o755)
         if out_dir.exists():
             shutil.rmtree(out_dir)
         staged.rename(out_dir)
