@@ -10,6 +10,9 @@ PLAYERS = [
 
 
 class DemoSources:
+    def current_week(self):
+        return 2026, 2
+
     def players(self):
         return {str(i): {"full_name": name, "team": team, "position": pos}
                 for i, (name, team, pos, *_) in enumerate(PLAYERS)}

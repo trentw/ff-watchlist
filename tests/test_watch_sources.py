@@ -122,3 +122,14 @@ def test_projection_identity_falls_back_to_nested_row_and_summarizes_diagnostics
     assert result["warnings"] == ["1 projection rows missing identity rows"]
     assert result["diagnostics"]["counts"] == {"missing_identity_rows": 1, "missing_directory_rows": 2}
     assert result["diagnostics"]["details"]
+
+
+def test_current_week_requires_the_regular_season(monkeypatch, tmp_path: Path):
+    state = {"season": "2026", "season_type": "regular", "week": 2, "display_week": 3}
+    monkeypatch.setattr("ff_watchlist.watch_sources.httpx.get", lambda *a, **k: _Response(state))
+    assert PublicSources(tmp_path / "in").current_week() == (2026, 3)
+
+    state = {"season": "2026", "season_type": "off", "week": 0}
+    monkeypatch.setattr("ff_watchlist.watch_sources.httpx.get", lambda *a, **k: _Response(state))
+    with pytest.raises(SourceUnavailable):
+        PublicSources(tmp_path / "off").current_week()

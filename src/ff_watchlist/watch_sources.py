@@ -32,6 +32,7 @@ class SourceUnavailable(RuntimeError):
 
 SCORINGS = {"std", "half", "ppr"}
 _SLEEPER_PLAYERS = "https://api.sleeper.app/v1/players/nfl"
+_SLEEPER_STATE = "https://api.sleeper.app/v1/state/nfl"
 _ESPN_SCOREBOARD = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard"
 
 
@@ -192,6 +193,28 @@ class PublicSources:
             return response.json()
         except (httpx.HTTPError, ValueError) as exc:
             raise SourceUnavailable(f"{url}: {exc}") from exc
+
+    def current_week(self) -> tuple[int, int]:
+        """Return Sleeper's current regular-season ``(season, week)``."""
+        path = self.cache_dir / "sleeper-state.json"
+
+        def fetch() -> tuple[dict[str, Any], str]:
+            value = self._get_json(_SLEEPER_STATE)
+            if not isinstance(value, dict):
+                raise SourceUnavailable("Sleeper state was not an object")
+            return value, _utc_now()
+
+        state, _ = self._cached_or_fetch(path, source="sleeper-state", endpoint=_SLEEPER_STATE,
+                                          fetch=fetch, decode=json.loads)
+        if not isinstance(state, dict) or state.get("season_type") != "regular":
+            raise SourceUnavailable("Sleeper does not report a regular-season week")
+        try:
+            season, week = int(state["season"]), int(state.get("display_week") or state["week"])
+        except (KeyError, TypeError, ValueError) as exc:
+            raise SourceUnavailable("Sleeper state had no usable season and week") from exc
+        if not 1 <= week <= 18:
+            raise SourceUnavailable(f"Sleeper reported week {week}, outside the regular season")
+        return season, week
 
     def players(self) -> dict[str, Any]:
         """Return Sleeper's raw NFL player directory, preserving its shape."""
