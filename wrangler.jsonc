@@ -3,6 +3,6 @@
   "name": "ff-watchlist",
   "compatibility_date": "2026-09-01",
   "assets": { "directory": "./web/dist" },
-  "workers_dev": true,
+  "workers_dev": false,
   "routes": [{ "pattern": "ffwatchlist.com", "custom_domain": true }]
 }
