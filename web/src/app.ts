@@ -9,6 +9,8 @@ import {
 } from "./roster.ts";
 import type { Roster } from "./roster.ts";
 import { buildIndex, searchPlayers } from "./search.ts";
+import { SleeperError, findAccount, importLineup, loadSource, saveSource } from "./sleeper.ts";
+import type { SleeperLeague, SleeperSource } from "./sleeper.ts";
 import type { SearchIndexEntry } from "./search.ts";
 import { TEAM_COLORS, headshotUrl, logoUrl } from "./teams.ts";
 
@@ -28,6 +30,7 @@ let index: SearchIndexEntry[] = [];
 let roster: Roster = emptyRoster();
 let viewingShared = false;
 let pasteIssues: LineupIssue[] = [];
+let sleeperSource: SleeperSource | null = null;
 let options: SearchIndexEntry[] = [];
 let activeOption = -1;
 
@@ -178,6 +181,83 @@ function importPaste(): void {
   commit({ ...roster, entries: [...roster.entries, ...added] });
 }
 
+// --------------------------------------------------------------- Sleeper import
+
+function renderSleeperSource(): void {
+  const update = $("sleeper-update");
+  update.hidden = sleeperSource === null;
+  if (!sleeperSource) return;
+  update.textContent = `Update from Sleeper · ${sleeperSource.leagueName}`;
+  const when = age(sleeperSource.importedAt)?.text ?? "earlier";
+  if (!$("sleeper-status").textContent) $("sleeper-status").textContent = `Imported from ${sleeperSource.leagueName} ${when}.`;
+}
+
+async function importFrom(account: { userId: string; username: string }, league: SleeperLeague): Promise<void> {
+  if (!bundle) return;
+  const lineup = await importLineup({ userId: account.userId, league }, bundle.manifest.week, bundle.directory);
+  sleeperSource = {
+    username: account.username, userId: account.userId,
+    leagueId: league.id, leagueName: league.name, importedAt: new Date().toISOString(),
+  };
+  saveSource(storage, sleeperSource);
+  pasteIssues = [];
+  const notes = [`Imported ${lineup.entries.length} players from ${league.name}.`];
+  notes.push(lineup.scoringIsPreset
+    ? `Scoring set to ${SCORING_LABEL[lineup.scoring]}; other custom league scoring isn’t applied.`
+    : `This league gives ${league.pointsPerReception} per reception; showing the nearest preset, ${SCORING_LABEL[lineup.scoring]}.`);
+  if (lineup.skipped) notes.push(`${lineup.skipped} player${lineup.skipped === 1 ? "" : "s"} at positions without projections ${lineup.skipped === 1 ? "was" : "were"} left out.`);
+  $("sleeper-status").textContent = notes.join(" ");
+  $("sleeper-leagues").replaceChildren();
+  $<HTMLDetailsElement>("sleeper").open = false;
+  commit({ ...roster, scoring: lineup.scoring, entries: lineup.entries });
+}
+
+/** Run one Sleeper step with the buttons disabled, turning failures into a message. */
+async function withSleeper(step: () => Promise<void>): Promise<void> {
+  const buttons = [$<HTMLButtonElement>("sleeper-find"), $<HTMLButtonElement>("sleeper-update")];
+  buttons.forEach((b) => (b.disabled = true));
+  $("sleeper-status").textContent = "Asking Sleeper…";
+  try {
+    await step();
+  } catch (error) {
+    $("sleeper-status").textContent = error instanceof SleeperError ? error.message : "Couldn’t reach Sleeper. Please try again.";
+  } finally {
+    buttons.forEach((b) => (b.disabled = false));
+  }
+}
+
+function wireSleeper(): void {
+  const username = $<HTMLInputElement>("sleeper-username");
+  const find = () => withSleeper(async () => {
+    if (!bundle) return;
+    const account = await findAccount(username.value, bundle.manifest.season);
+    const list = $("sleeper-leagues");
+    list.replaceChildren();
+    for (const league of account.leagues) {
+      const choose = el("button", undefined, "secondary");
+      choose.type = "button";
+      choose.append(el("span", league.name), el("span", `${league.teams} teams`, "meta"));
+      choose.addEventListener("click", () => void withSleeper(() => importFrom(account, league)));
+      const item = el("li");
+      item.append(choose);
+      list.append(item);
+    }
+    $("sleeper-status").textContent = account.leagues.length
+      ? `Choose a league.${roster.entries.length ? " It replaces the lineup you have now." : ""}`
+      : `${account.username} has no ${bundle.manifest.season} leagues on Sleeper.`;
+  });
+  $("sleeper-find").addEventListener("click", () => void find());
+  username.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); void find(); } });
+  $("sleeper-update").addEventListener("click", () => void withSleeper(async () => {
+    if (!bundle || !sleeperSource) return;
+    const source = sleeperSource;
+    const account = await findAccount(source.username, bundle.manifest.season);
+    const league = account.leagues.find((l) => l.id === source.leagueId);
+    if (!league) throw new SleeperError(`${source.leagueName} is no longer among your leagues.`);
+    await importFrom(account, league);
+  }));
+}
+
 function exampleRoster(data: Bundle): Roster {
   const ids = new Map<string, string>();
   for (const [id, entry] of Object.entries(data.directory)) ids.set(`${normName(entry.name)}|${entry.team}`, id);
@@ -204,8 +284,11 @@ function playerList(players: Player[], data: Bundle, bench = false): HTMLElement
     const color = TEAM_COLORS[player.team];
     if (color) portrait.style.setProperty("--team-color", color);
     portrait.append(el("span", player.jersey != null ? `#${player.jersey}` : player.pos, "number"));
-    if (data.manifest.media.headshots) addImage(portrait, headshotUrl(player.id), "headshot");
-    else if (data.manifest.media.logos && player.pos === "DST") addImage(portrait, logoUrl(player.team), "headshot logo");
+    if (player.pos === "DST") {
+      if (data.manifest.media.logos) addImage(portrait, logoUrl(player.team), "headshot logo");
+    } else if (data.manifest.media.headshots) {
+      addImage(portrait, headshotUrl(player.id), "headshot");
+    }
     const info = el("div", undefined, "player-info");
     const slot = player.slot === player.pos ? "" : ` · ${player.slot}`;
     info.append(el("span", player.name, "player-name"), el("span", `${player.team} · ${player.pos}${slot}`, "meta"));
@@ -347,6 +430,7 @@ function render(): void {
   $("board-season").textContent = String(bundle.manifest.season);
   const { players, missing } = resolveRoster(roster, bundle.directory);
   renderRoster(players);
+  renderSleeperSource();
   renderStatus(bundle);
   attachProjections(players, bundle.projections, roster.scoring);
   const ranking = rank(players, bundle.schedule);
@@ -407,11 +491,20 @@ function start(): void {
   // On a phone the editor sits above the results; fold it away once a lineup exists.
   $<HTMLDetailsElement>("editor").open = !(roster.entries.length && window.matchMedia("(max-width: 780px)").matches);
 
+  sleeperSource = loadSource(storage);
+  if (sleeperSource) $<HTMLInputElement>("sleeper-username").value = sleeperSource.username;
   wireSearch();
+  wireSleeper();
   $("scoring").addEventListener("change", () => commit({ ...roster, scoring: $<HTMLSelectElement>("scoring").value as Scoring }, !viewingShared));
   $("paste-add").addEventListener("click", importPaste);
   $("example").addEventListener("click", () => { if (bundle) commit(exampleRoster(bundle)); });
-  $("clear").addEventListener("click", () => { pasteIssues = []; commit({ ...roster, entries: [] }); });
+  $("clear").addEventListener("click", () => {
+    pasteIssues = [];
+    sleeperSource = null;
+    saveSource(storage, null);
+    $("sleeper-status").textContent = "";
+    commit({ ...roster, entries: [] });
+  });
   $("share").addEventListener("click", async () => {
     const url = `${location.origin}${location.pathname}#${encodeShare(roster)}`;
     try {

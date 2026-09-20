@@ -49,6 +49,18 @@
         <option value="ppr">PPR</option>
       </select>
 
+      <details class="paste" id="sleeper">
+        <summary>Import from Sleeper</summary>
+        <label for="sleeper-username" class="hint">Your Sleeper username. It goes from your browser straight to Sleeper’s public API; this site never sees it.</label>
+        <div class="inline-form">
+          <input id="sleeper-username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="username">
+          <button id="sleeper-find" type="button" class="secondary">Find leagues</button>
+        </div>
+        <ul id="sleeper-leagues" class="league-list" aria-label="Your Sleeper leagues"></ul>
+      </details>
+      <p id="sleeper-status" class="hint import-status" role="status"></p>
+      <button id="sleeper-update" type="button" class="secondary wide" hidden></button>
+
       <details class="paste">
         <summary>Paste a roster instead</summary>
         <label for="paste" class="hint">One player per line, or <code>name, team, slot</code>. Use BN, Bench or IR for reserves.</label>
@@ -60,7 +72,7 @@
         <button id="example" type="button" class="secondary">Try an example lineup</button>
         <button id="clear" type="button" class="secondary" hidden>Clear lineup</button>
       </div>
-      <p class="hint">No account needed. Your lineup stays in this browser and is never sent to a server.</p>
+      <p class="hint">No account needed. Your lineup stays in this browser and is never sent to our servers.</p>
     </details>
   </section>
 
