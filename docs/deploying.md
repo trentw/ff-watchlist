@@ -9,9 +9,9 @@ The site is a directory of static files, so any static host works. This reposito
 
 ## Setup for your own copy
 
-1. Create a Cloudflare API token with the *Workers Scripts: Edit* permission for your account.
+1. Create a Cloudflare API token from the *Edit Cloudflare Workers* template, limited to your account and the zone of your domain.
 2. Add repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
-3. Change `name` in `wrangler.jsonc` if you want a different Worker name, and attach a custom domain to the Worker in the Cloudflare dashboard.
+3. In `wrangler.jsonc`, set `name` and replace the `routes` pattern with a hostname in a Cloudflare zone you control, or remove `routes` to use only the `workers.dev` address.
 
 ## Switching images off
 
