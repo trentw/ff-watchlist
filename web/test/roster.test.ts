@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { decodeShare, emptyRoster, encodeShare, loadRoster, resolveRoster, saveRoster } from "../src/roster.ts";
+import {
+  confirmRoster, decodeShare, emptyRoster, encodeShare, loadRoster, needsReview, resolveRoster, saveRoster, teamChanges, weekKey,
+} from "../src/roster.ts";
 import type { Roster } from "../src/roster.ts";
 import { buildIndex, searchPlayers } from "../src/search.ts";
 import type { Directory } from "../src/lineup.ts";
@@ -71,4 +73,31 @@ test("search matches word prefixes and skips inactive and unsigned players", () 
   assert.deepEqual(names("st brown"), ["Amon-Ra St. Brown"]);
   assert.deepEqual(names("vikings"), ["Minnesota Vikings"]);
   assert.deepEqual(names("  "), []);
+});
+
+test("a lineup asks for review once per week and notices team changes", () => {
+  const week2 = weekKey(2026, 2);
+  assert.equal(needsReview(emptyRoster(), week2), false);
+  assert.equal(needsReview(roster, week2), true);
+
+  const confirmed = confirmRoster(roster, directory, week2);
+  assert.equal(needsReview(confirmed, week2), false);
+  assert.equal(needsReview(confirmed, weekKey(2026, 3)), true);
+  assert.deepEqual(confirmed.entries[0], { id: "1", slot: "WR", team: "MIN" });
+  assert.deepEqual(teamChanges(confirmed, directory), []);
+
+  const traded = { ...directory, "1": { ...directory["1"]!, team: "DAL" }, "6": { ...directory["6"]!, team: "" } };
+  assert.deepEqual(teamChanges(confirmed, traded), [
+    { name: "Justin Jefferson", from: "MIN", to: "DAL" },
+    { name: "Amon-Ra St. Brown", from: "DET", to: "free agency" },
+  ]);
+  assert.deepEqual(teamChanges(roster, traded), []);
+});
+
+test("the confirmed week and teams survive storage but are left out of share links", () => {
+  const storage = memoryStorage();
+  const confirmed = confirmRoster(roster, directory, weekKey(2026, 2));
+  saveRoster(storage, confirmed);
+  assert.deepEqual(loadRoster(storage), confirmed);
+  assert.deepEqual(decodeShare(`#${encodeShare(confirmed)}`), roster);
 });

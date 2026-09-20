@@ -8,12 +8,22 @@ import type { Directory, LineupPlayer } from "./lineup.ts";
 export interface RosterEntry {
   id: string;
   slot: string;
+  /** The player's team when the lineup was last confirmed. */
+  team?: string;
 }
 
 export interface Roster {
   version: 1;
   scoring: Scoring;
   entries: RosterEntry[];
+  /** The week the visitor last edited or confirmed this lineup, e.g. "2026-3". */
+  confirmed?: string;
+}
+
+export interface TeamChange {
+  name: string;
+  from: string;
+  to: string;
 }
 
 const STORAGE_KEY = "ff-watchlist.roster";
@@ -26,15 +36,17 @@ export function emptyRoster(): Roster {
 
 function validRoster(value: unknown): Roster | null {
   if (typeof value !== "object" || value === null) return null;
-  const { version, scoring, entries } = value as Record<string, unknown>;
+  const { version, scoring, entries, confirmed } = value as Record<string, unknown>;
   if (version !== 1 || typeof scoring !== "string" || !SCORINGS.includes(scoring) || !Array.isArray(entries)) return null;
   const clean: RosterEntry[] = [];
   for (const entry of entries.slice(0, MAX_ENTRIES)) {
     if (typeof entry?.id === "string" && typeof entry?.slot === "string" && !clean.some((e) => e.id === entry.id)) {
-      clean.push({ id: entry.id, slot: entry.slot });
+      clean.push({ id: entry.id, slot: entry.slot, ...(typeof entry.team === "string" ? { team: entry.team } : {}) });
     }
   }
-  return { version: 1, scoring: scoring as Scoring, entries: clean };
+  const roster: Roster = { version: 1, scoring: scoring as Scoring, entries: clean };
+  if (typeof confirmed === "string") roster.confirmed = confirmed;
+  return roster;
 }
 
 /** Storage can be unavailable (private browsing, blocked cookies); the app still works without it. */
@@ -87,4 +99,34 @@ export function resolveRoster(roster: Roster, directory: Directory): { players: 
     players.push(player);
   }
   return { players, missing };
+}
+
+export function weekKey(season: number, week: number): string {
+  return `${season}-${week}`;
+}
+
+/** A lineup saved in an earlier week is not necessarily this week's lineup. */
+export function needsReview(roster: Roster, currentWeek: string): boolean {
+  return roster.entries.length > 0 && roster.confirmed !== currentWeek;
+}
+
+/** Record that the lineup is right for this week, with each player's current team. */
+export function confirmRoster(roster: Roster, directory: Directory, currentWeek: string): Roster {
+  const entries = roster.entries.map(({ id, slot }) => {
+    const team = directory[id]?.team;
+    return team ? { id, slot, team } : { id, slot };
+  });
+  return { ...roster, entries, confirmed: currentWeek };
+}
+
+/** Players whose team differs from the one recorded when the lineup was confirmed. */
+export function teamChanges(roster: Roster, directory: Directory): TeamChange[] {
+  const changes: TeamChange[] = [];
+  for (const entry of roster.entries) {
+    const now = directory[entry.id];
+    if (now && entry.team !== undefined && entry.team !== now.team) {
+      changes.push({ name: now.name, from: entry.team || "free agency", to: now.team || "free agency" });
+    }
+  }
+  return changes;
 }
