@@ -118,3 +118,39 @@ h1{font-size:2.6rem}
 
 @media(prefers-reduced-motion:reduce){button{transition:none}
 }
+.controls summary{list-style:none;cursor:pointer;color:inherit}
+.controls summary::-webkit-details-marker{display:none}
+.editor-summary{display:block;font:bold 1.35rem/1.25 Georgia,serif;margin:0 0 18px}
+#editor:not([open]) .editor-summary{margin:0;font-size:1.05rem}
+#editor:not([open]) .editor-summary:after{content:' · Edit';color:#8c402d;font:bold .8rem Arial,sans-serif}
+#editor:not([open]) .panel-kicker{display:none}
+#editor:not([open]){margin:-6px 0}
+.search-box{position:relative}
+#search-results{position:absolute;z-index:5;left:0;right:0;margin:2px 0 0;padding:0;list-style:none;background:#fffdf5;border:1px solid #8b937b;box-shadow:0 8px 18px #0004;max-height:320px;overflow:auto}
+.option{display:flex;justify-content:space-between;gap:10px;padding:9px 10px;cursor:pointer;font-size:.9rem;border-bottom:1px solid #e4e4d8}
+.option.active,.option:hover{background:#f0e2b8}
+.option .meta,.roster-row .meta{color:#69725e;font-size:.75rem}
+.check{display:flex;align-items:center;gap:7px;font-weight:normal;font-size:.8rem;margin:9px 0 16px;color:#636855}
+.check input{width:auto;margin:0}
+.roster{list-style:none;margin:0 0 16px;padding:0;border-top:1px solid #c8ccb9}
+.roster-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #d9dccd}
+.roster-row .player-info{flex:1}
+.roster-row .meta{display:block}
+.toggle{min-width:78px;padding:6px 8px}
+.toggle[aria-pressed=false]{opacity:.7;border-style:dashed}
+.remove{padding:4px 10px;font-size:1.05rem;line-height:1.2}
+.paste summary{font-size:.875rem;color:#5e644f}
+.paste textarea{margin-bottom:10px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.actions button{flex:1}
+#status{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center}
+.chip{border:1px solid #9fb08c88;border-radius:99px;padding:1px 10px;color:#e3e8d2}
+.chip.stale{border-color:#e6b651;color:#ffd98a}
+.share-status{margin:0 0 8px;font-size:.8rem;color:#d6dec9;min-height:0}
+.share-status:empty{display:none}
+.notice button{margin-left:6px;color:#55401a;border-color:#a98a45}
+.other-games{color:#c5cfb4;font-size:.8rem;margin:10px 2px 0}
+.game.over{opacity:.62}
+.matchup-title{margin:0;font-size:inherit}
+.portrait .number{font-size:.95rem}
+.headshot.logo{object-fit:contain;padding:5px}

@@ -13,6 +13,5 @@ def _generator():
 
 
 def test_committed_cases_are_current():
-    generator = _generator()
-    committed = generator.FIXTURE.read_text(encoding="utf-8")
-    assert committed == generator.build(), "run: uv run python scripts/make_parity_fixtures.py"
+    for path, expected in _generator().build().items():
+        assert path.read_text(encoding="utf-8") == expected, "run: uv run python scripts/make_parity_fixtures.py"

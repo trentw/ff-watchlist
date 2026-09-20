@@ -1,58 +1,65 @@
 # FF Watchlist
 
-Find the NFL games that matter to your fantasy lineup. Paste your starters
-and bench, choose scoring, and get games ranked within each kickoff window.
+Find the NFL games that matter to your fantasy lineup. Add your starters and
+bench, choose scoring, and get every game ranked within its kickoff window.
 Starter projected points lead; bench points break ties. The interface takes
 inspiration from vintage tabletop football.
 
+Live at [ffwatchlist.com](https://ffwatchlist.com). No account, and your lineup
+never leaves your browser.
+
+## How it works
+
+The site is static. A scheduled job collects the shared facts for the current
+week (player directory, schedule, projections) and publishes them as a small
+JSON bundle. The page loads that bundle and does the rest locally: player
+search, lineup matching, ranking and a saved lineup in `localStorage`.
+
+```text
+providers -> ff-watchlist export -> web/dist/data/*.json -> browser app
+```
+
 ## Run locally
 
-Requires Python 3.12+ and [uv](https://docs.astral.sh/uv/).
+Requires Python 3.12+ with [uv](https://docs.astral.sh/uv/) and Node 22.18+.
 
 ```sh
 uv sync --locked
-uv run ff-watchlist --demo
+npm ci
+npm run build                      # web/dist
+uv run ff-watchlist export --demo  # web/dist/data, synthetic and offline
+uv run ff-watchlist serve          # http://127.0.0.1:8793
 ```
 
-Open http://127.0.0.1:8793 and choose **Try an example lineup**, then **Find my
-matchups**. Offline demo mode uses authored points and a fictional schedule
-for **2026 week 2**; it makes no provider requests and loads no external images.
+Drop `--demo` to collect the current week from the live providers described in
+the [source notes](THIRD_PARTY.md). Responses are cached under ignored `data/`.
+`--no-headshots` and `--no-logos` publish a bundle that tells the app not to
+load those images.
 
-For the experimental public-source adapters:
+## What it does
 
-```sh
-uv run ff-watchlist
-```
+- Search players by name, or paste names, roster text or CSV; ambiguous and
+  unknown names are reported instead of guessed.
+- Standard, half-PPR and PPR scoring.
+- Starters, bench, byes and missing projections stay distinguishable; a
+  missing projection is never counted as zero.
+- Kickoff times in your timezone; finished games are dimmed.
+- The lineup is saved in your browser and can be shared as a link.
+- Team logos and headshots are optional and fail independently of rankings.
 
-Choose the actual season and week yourself: the initial form is deliberately
-set to the reproducible 2026 week 2 example, not an automatic current-week guess.
-This mode fetches Sleeper player/projection data and ESPN schedules and optional
-imagery. Provider caches are dated under ignored `data/`. See the
-[source notes](THIRD_PARTY.md) for what each provider is used for.
-`--host` and `--port` configure the listener; the default binds only to localhost.
-
-## Current capabilities
-
-- Paste names, roster text or CSV; unresolved identities remain visible.
-- Standard, half-PPR and PPR presets; optional `name,team,points` projection CSV.
-- Starters, bench, byes and missing projections remain distinguishable.
-- Optional team logos and headshots fail independently of the rankings.
-- Explicit share links include the lineup and any pasted projections.
-
-No accounts, saved rosters, automatic league imports or static deployment yet.
-The local server receives lineups to calculate results but does not save them.
-The CSV fallback still needs directory/schedule data in public-source mode.
+Not yet: importing a lineup from a fantasy platform, custom league scoring,
+multiple leagues.
 
 ## Contribute
 
 ```sh
-uv sync --locked
 uv run python scripts/install_hooks.py
 uv run python scripts/check.py
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md),
-[architecture](docs/architecture.md) and [CHANGELOG.md](CHANGELOG.md).
+[architecture](docs/architecture.md), [deploying](docs/deploying.md) and
+[CHANGELOG.md](CHANGELOG.md).
 Hooks are opt-in and are not a replacement for review.
 
 ## License

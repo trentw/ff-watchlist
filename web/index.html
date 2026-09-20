@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FF Watchlist — Matchups to watch</title>
+<meta name="description" content="Find the NFL games that matter to your fantasy lineup, ranked within each kickoff window.">
+<meta property="og:title" content="FF Watchlist">
+<meta property="og:description" content="Find the NFL games that matter to your fantasy lineup.">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="styles.css">
+<script type="module" src="app.js"></script>
+</head>
+<body><main>
+<header class="masthead">
+  <div class="brand">
+    <span class="eyebrow">FANTASY FOOTBALL · THE SUNDAY GAME PLAN</span>
+    <h1>Matchups <em>to watch.</em></h1>
+    <p>Your starters. Your screen. Every game that matters.</p>
+  </div>
+  <div class="scoreboard" aria-label="Week and scoring">
+    <div><span>WEEK</span><strong id="board-week">––</strong></div>
+    <div><span>SEASON</span><strong id="board-season">––––</strong></div>
+    <div><span>SCORING</span><strong id="board-scoring">––</strong></div>
+  </div>
+</header>
+
+<div class="workspace">
+  <section class="controls" aria-label="Your lineup">
+    <details id="editor" open>
+      <summary><span class="panel-kicker"><span>01 / SET YOUR LINEUP</span></span><span id="editor-summary" class="editor-summary">Set your lineup</span></summary>
+
+      <div class="search-box">
+        <label for="search">Add a player</label>
+        <input id="search" type="search" role="combobox" aria-expanded="false" aria-controls="search-results" aria-autocomplete="list"
+               autocomplete="off" spellcheck="false" placeholder="Start typing a name…" disabled>
+        <ul id="search-results" role="listbox" aria-label="Matching players" hidden></ul>
+        <label class="check"><input id="add-to-bench" type="checkbox"> Add to bench</label>
+      </div>
+
+      <ul id="roster" class="roster" aria-label="Players in your lineup"></ul>
+      <p id="roster-empty" class="hint">No players yet. Search above, paste a roster below, or try the example.</p>
+
+      <label for="scoring">Scoring</label>
+      <select id="scoring">
+        <option value="std">Standard</option>
+        <option value="half">Half-PPR</option>
+        <option value="ppr">PPR</option>
+      </select>
+
+      <details class="paste">
+        <summary>Paste a roster instead</summary>
+        <label for="paste" class="hint">One player per line, or <code>name, team, slot</code>. Use BN, Bench or IR for reserves.</label>
+        <textarea id="paste" rows="7" placeholder="QB  Caleb Williams  CHI - QB&#10;BN  Justin Jefferson  MIN - WR"></textarea>
+        <button id="paste-add" type="button" class="secondary">Add these players</button>
+      </details>
+
+      <div class="actions">
+        <button id="example" type="button" class="secondary">Try an example lineup</button>
+        <button id="clear" type="button" class="secondary" hidden>Clear lineup</button>
+      </div>
+      <p class="hint">No account needed. Your lineup stays in this browser and is never sent to a server.</p>
+    </details>
+  </section>
+
+  <section class="results" aria-label="Your matchups">
+    <div class="result-heading">
+      <div><span class="eyebrow">02 / PICK YOUR GAME</span><h2>Your watch list</h2></div>
+      <button id="share" type="button" class="secondary" hidden>Copy share link</button>
+    </div>
+    <p id="share-status" class="share-status" role="status"></p>
+    <p id="status" role="status">Loading this week’s games…</p>
+    <div id="issues" aria-live="polite"></div>
+    <div id="placeholder" class="field-empty">
+      <div class="yard-numbers" aria-hidden="true"><span>10</span><span>20</span><span>30</span><span>40</span><span>50</span></div>
+      <div class="empty-message"><span class="eyebrow">READY WHEN YOU ARE</span><h3>Set the lineup.<br>Find your game.</h3><p>Add your starters to put your Sunday on the board.</p></div>
+    </div>
+    <div id="results"></div>
+  </section>
+</div>
+
+<footer>
+  Kickoff times are shown in your timezone. A hobby project, not affiliated with the NFL or any fantasy platform.
+  Names, logos and photos belong to their owners. <a href="https://github.com/trentw/ff-watchlist">Source and removal requests</a>.
+</footer>
+</main></body>
+</html>

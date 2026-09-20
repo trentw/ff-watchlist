@@ -41,7 +41,7 @@ def test_ambiguity_and_explicit_old_team_are_reported():
 
 def test_dst_full_team_alias_resolves_without_fuzzy_player_matching():
     got = parse_lineup("DST Chicago Bears D/ST", PLAYERS)
-    assert got["players"] == [{"name": "Chicago Bears", "team": "CHI", "pos": "DST", "slot": "DST"}]
+    assert got["players"] == [{"id": "dst", "name": "Chicago Bears", "team": "CHI", "pos": "DST", "slot": "DST"}]
 
 
 def test_zero_jersey_number_is_kept():

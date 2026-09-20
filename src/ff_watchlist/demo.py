@@ -10,6 +10,9 @@ PLAYERS = [
 
 
 class DemoSources:
+    def current_week(self):
+        return 2026, 2
+
     def players(self):
         return {str(i): {"full_name": name, "team": team, "position": pos}
                 for i, (name, team, pos, *_) in enumerate(PLAYERS)}
@@ -35,8 +38,3 @@ class DemoSources:
     def _validate(season, week):
         if (season, week) != (2026, 2):
             raise SourceUnavailable("Offline fixtures cover 2026 week 2 only")
-
-
-class DemoMedia:
-    def lookup(self, players):
-        return {"teams": {}, "players": {}, "warnings": []}

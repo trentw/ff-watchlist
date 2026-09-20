@@ -8,12 +8,19 @@ The format follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/
 
 ### Added
 
-- Standalone local watchlist with roster paste, scoring presets, starter-based
-  game ranking, optional imagery and vintage gridiron styling.
-- Synthetic offline demo and isolated provider tests.
-- TypeScript browser ranker with shared parity cases that hold it to the
-  Python core's results; kickoff windows there are timezone-independent.
-- Contributor guidance and opt-in code-quality, private-file and commit-message hooks.
+- Static browser app: player search, roster paste, starter and bench toggles,
+  a lineup saved in the browser, share links, kickoff times in the viewer's
+  timezone, visible data age and optional team logos and headshots.
+- `ff-watchlist export` writes a validated weekly data bundle; `ff-watchlist
+  serve` previews the built site. `--demo` data is synthetic and offline.
+- Shared parity cases hold the TypeScript ranking and lineup parsing to the
+  Python reference implementations.
+- Contributor guidance and opt-in code-quality and commit-message hooks.
+
+### Removed
+
+- The FastAPI server and its page; lineups are no longer sent to a server.
+  Pasting your own projection CSV went with it.
 
 ### Fixed
 

@@ -1,6 +1,6 @@
-"""Write the ranking cases shared by the Python and browser test suites.
+"""Write the cases shared by the Python and browser test suites.
 
-The Python core produces the expected output. The browser ranker must
+The Python modules produce the expected output. The browser code must
 reproduce it, and ``tests/test_parity_fixtures.py`` fails when this file's
 output no longer matches what is committed.
 
@@ -14,8 +14,9 @@ from pathlib import Path
 from typing import Any
 
 from ff_watchlist.watch_core import Player, attach_projections, rank_payload
+from ff_watchlist.watch_lineup import parse_lineup
 
-FIXTURE = Path(__file__).resolve().parents[1] / "tests" / "parity" / "rank_cases.json"
+PARITY = Path(__file__).resolve().parents[1] / "tests" / "parity"
 
 
 def _player(name: str, team: str, pos: str, slot: str | None = None) -> dict[str, Any]:
@@ -159,18 +160,69 @@ CASES: list[dict[str, Any]] = [
 ]
 
 
+DIRECTORY = {
+    "1": {"name": "Caleb Williams", "team": "CHI", "position": "QB", "number": "18", "active": True},
+    "2": {"name": "Jahmyr Gibbs", "team": "DET", "position": "RB", "number": "0", "active": True},
+    "3": {"name": "D.J. Moore", "team": "CHI", "position": "WR", "active": True},
+    "4": {"name": "D.J. Moore", "team": "CAR", "position": "WR", "active": False},
+    "5": {"name": "Justin Jefferson", "team": "MIN", "position": "WR", "number": "18", "active": True},
+    "6": {"name": "Jordan Williams", "team": "CHI", "position": "WR", "active": True},
+    "7": {"name": "Jordan Williams", "team": "DET", "position": "WR", "active": True},
+    "8": {"name": "Ja'Marr Chase", "team": "CIN", "position": "WR", "number": "1", "active": True},
+    "9": {"name": "Amon-Ra St. Brown", "team": "DET", "position": "WR", "number": "14", "active": True},
+    "10": {"name": "Marvin Harrison Jr.", "team": "ARI", "position": "WR", "active": True},
+    "11": {"name": "Sam Twin", "team": "LAC", "position": "RB", "active": True},
+    "12": {"name": "Sam Twin", "team": "LAC", "position": "TE", "active": True},
+    "13": {"name": "Free Agent", "team": "", "position": "K", "active": True},
+    "CHI": {"name": "Chicago Bears", "team": "CHI", "position": "DST", "active": True},
+    "LAR": {"name": "Los Angeles Rams", "team": "LAR", "position": "DST", "active": True},
+}
+
+LINEUPS = {
+    "csv, copied roster rows, tabs and a bench marker": (
+        "name,team,slot\nCaleb Williams, CHI, QB\nQB  Caleb Williams  Chi - QB\n"
+        "WR\tD.J. Moore\tCHI\nBN Justin Jefferson MIN - WR"),
+    "bare names are starters and markup is read as text": (
+        "<tr><td>WR</td><td>D.J. Moore</td><td>CHI</td></tr>\nCaleb Williams\n"
+        "<script>alert(1)</script>Jahmyr Gibbs<!-- hidden -->\n&lt;b&gt;Nobody&lt;/b&gt;"),
+    "ambiguous names and stale teams are reported, not guessed": "Jordan Williams\nD.J. Moore, CAR, WR\nJordan Williams, DET",
+    "position narrows a shared name": "RB Sam Twin\nSam Twin LAC - TE\nSam Twin",
+    "defenses resolve by team": "DST Chicago Bears D/ST\nDEF  Rams  LA - DEF\nSeattle Seahawks D/ST",
+    "one field per line, as phones copy it": "QB\nCaleb Williams\nCHI - QB\nBN\nJustin Jefferson\nMIN - WR\nWR",
+    "bad teams and slots are errors": "Caleb Williams, ZZZ, QB\nCaleb Williams, CHI, BNN\nBNN, Caleb Williams, CHI",
+    "reserve slots become bench": "Justin Jefferson, MIN, RESERVE\nIR Jahmyr Gibbs\nD.J. Moore, CHI, WR, BN",
+    "pipes, dashes, parentheses and full team names": (
+        "Ja’Marr Chase | WR | CIN\nAmon-Ra St. Brown — DET — WR\nMarvin Harrison Jr (ARI) WR\n"
+        "FLEX Jahmyr Gibbs Detroit Lions\nW/R/T Caleb Williams"),
+    "headers, blanks, duplicates and unknowns": (
+        "Starting Lineup\n\nPlayer, Team, Slot\nCaleb Williams, CHI, QB\ncaleb williams\nNobody Real, CHI, WR\n"
+        "Free Agent\nK Free Agent"),
+    "slot first csv": "QB, Caleb Williams, CHI\nBN, Justin Jefferson, MIN\nWR, Ja'Marr Chase, CIN, extra",
+}
+
+
 def _expected(case: dict[str, Any]) -> dict[str, Any]:
     players = [Player(**row) for row in case["players"]]
     attach_projections(players, case["projections"], case["scoring"])
     return rank_payload({"players": [asdict(p) for p in players], "schedule": case["schedule"]})
 
 
-def build() -> str:
-    cases = [{**case, "expected": _expected(case)} for case in CASES]
-    return json.dumps({"timezone": "America/Los_Angeles", "cases": cases}, indent=1, ensure_ascii=False) + "\n"
+def _dump(value: Any) -> str:
+    return json.dumps(value, indent=1, ensure_ascii=False) + "\n"
+
+
+def build() -> dict[Path, str]:
+    rank_cases = [{**case, "expected": _expected(case)} for case in CASES]
+    lineup_cases = [{"name": name, "text": text, "expected": parse_lineup(text, DIRECTORY)}
+                    for name, text in LINEUPS.items()]
+    return {
+        PARITY / "rank_cases.json": _dump({"timezone": "America/Los_Angeles", "cases": rank_cases}),
+        PARITY / "lineup_cases.json": _dump({"directory": DIRECTORY, "cases": lineup_cases}),
+    }
 
 
 if __name__ == "__main__":
-    FIXTURE.parent.mkdir(parents=True, exist_ok=True)
-    FIXTURE.write_text(build(), encoding="utf-8")
-    print(f"wrote {FIXTURE.relative_to(FIXTURE.parents[2])}")
+    PARITY.mkdir(parents=True, exist_ok=True)
+    for path, text in build().items():
+        path.write_text(text, encoding="utf-8")
+        print(f"wrote {path.relative_to(PARITY.parents[1])}")

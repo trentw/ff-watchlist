@@ -29,6 +29,8 @@ export interface ScheduledGame {
   home: string;
   kick_utc: string;
   network: string;
+  /** Provider game state when the schedule was collected, e.g. "STATUS_FINAL". */
+  status?: string;
 }
 
 export interface RankedGame {
@@ -37,6 +39,7 @@ export interface RankedGame {
   /** Kickoff instant, ISO 8601 in UTC. */
   kick: string;
   network: string;
+  status: string;
   starters: Player[];
   bench: Player[];
   starter_pts: number;
@@ -159,6 +162,7 @@ export function rank(players: Player[], schedule: ScheduledGame[], timeZone?: st
     home: canonTeam(game.home),
     kickMs: Date.parse(game.kick_utc),
     network: game.network,
+    status: game.status ?? "",
     starters: [] as Player[],
     bench: [] as Player[],
   }));

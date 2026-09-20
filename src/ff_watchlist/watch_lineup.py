@@ -392,7 +392,7 @@ def parse_lineup(text: str, directory: dict) -> dict[str, list]:
             issue(line_no, visible, f"duplicate player {hit['name'] or query_name!r}; row ignored")
             continue
         seen.add(identity)
-        out = {"name": hit["name"] or query_name, "team": hit["team"] or requested_team,
+        out = {"id": hit["id"], "name": hit["name"] or query_name, "team": hit["team"] or requested_team,
                "pos": "DST" if hit["pos"] in {"DST", "DEF"} else (hit["pos"] or wanted_pos), "slot": slot}
         number = hit["row"].get("number")
         if number is None:

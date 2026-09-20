@@ -6,12 +6,15 @@
     "node": ">=22.18"
   },
   "scripts": {
+    "build": "node web/build.mjs",
     "typecheck": "tsc --noEmit",
     "test": "node --test \"web/test/**/*.test.ts\"",
     "check": "npm run typecheck && npm test"
   },
   "devDependencies": {
     "@types/node": "26.6.2",
-    "typescript": "7.0.2"
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2",
+    "wrangler": "4.135.0"
   }
 }
