@@ -50,3 +50,12 @@ def test_build_games_routes_starters_bench_and_bye():
     games, idle = watch.build_games(ps, sched)
     assert games[0].starters == [ps[0]] and games[0].bench == [ps[1]] and idle == [ps[2]]
     assert games[0].kick.hour == 10 and games[0].kick.tzinfo is not None
+
+def test_team_aliases_match_projections_and_schedule():
+    ps = [watch.Player("Jaguars", "JAC", "DST", "DEF"), watch.Player("A", "WSH", "WR", "WR")]
+    proj = [{"name": "Jacksonville Jaguars", "team_id": "JAX", "position_id": "DST", "stats": {"points": 6.5}},
+            {"name": "A", "team_id": "WAS", "position_id": "WR", "stats": {"points": 9.0}}]
+    assert watch.attach_projections(ps, proj, "std") == []
+    games, idle = watch.build_games(ps, [{"away": "JAC", "home": "WSH", "kick_utc": "2026-09-20T17:00Z", "network": ""}])
+    assert idle == [] and (games[0].away, games[0].home) == ("JAX", "WAS")
+    assert games[0].starter_pts == 15.5

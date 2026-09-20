@@ -104,10 +104,11 @@ def attach_projections(players: list[Player], proj: list[dict[str, Any]], scorin
             by_name[(norm_name(r["name"]), team)] = pts
     unmatched = []
     for p in players:
+        team = canon_team(p.team)
         if p.pos == "DST":
-            p.proj = dst_by_team.get(p.team)
+            p.proj = dst_by_team.get(team)
         else:
-            p.proj = by_name.get((norm_name(p.name), p.team))
+            p.proj = by_name.get((norm_name(p.name), team))
             if p.proj is None:  # traded / team mismatch: fall back to name alone if unique
                 hits = [v for (n, _t), v in by_name.items() if n == norm_name(p.name)]
                 p.proj = hits[0] if len(hits) == 1 else None
@@ -123,12 +124,12 @@ def attach_jerseys(players: list[Player], jerseys: dict[tuple[str, str], str]) -
 
 
 def build_games(players: list[Player], sched: list[dict[str, Any]]) -> tuple[list[Game], list[Player]]:
-    games = [Game(away=g["away"], home=g["home"], network=g["network"],
+    games = [Game(away=canon_team(g["away"]), home=canon_team(g["home"]), network=g["network"],
                   kick=dt.datetime.fromisoformat(g["kick_utc"].replace("Z", "+00:00")).astimezone(PACIFIC))
              for g in sched]
     idle: list[Player] = []
     for p in players:
-        g = next((g for g in games if g.has(p.team)), None)
+        g = next((g for g in games if g.has(canon_team(p.team))), None)
         if g is None:
             idle.append(p)  # bye week, or a team ESPN hasn't scheduled
         elif p.starter:
