@@ -11,6 +11,8 @@ The format follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/
 - Standalone local watchlist with roster paste, scoring presets, starter-based
   game ranking, optional imagery and vintage gridiron styling.
 - Synthetic offline demo and isolated provider tests.
+- TypeScript browser ranker with shared parity cases that hold it to the
+  Python core's results; kickoff windows there are timezone-independent.
 - Contributor guidance and opt-in code-quality, private-file and commit-message hooks.
 
 ### Fixed

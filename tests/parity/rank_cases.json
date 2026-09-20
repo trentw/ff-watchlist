@@ -1,0 +1,1578 @@
+{
+ "timezone": "America/Los_Angeles",
+ "cases": [
+  {
+   "name": "starters lead and bench points break ties",
+   "scoring": "std",
+   "players": [
+    {
+     "name": "Alpha Starter",
+     "team": "CIN",
+     "pos": "WR",
+     "slot": "WR"
+    },
+    {
+     "name": "Small Bench",
+     "team": "MIN",
+     "pos": "WR",
+     "slot": "BN"
+    },
+    {
+     "name": "Big Bench",
+     "team": "GB",
+     "pos": "RB",
+     "slot": "BN"
+    },
+    {
+     "name": "Late Bench",
+     "team": "KC",
+     "pos": "TE",
+     "slot": "IR"
+    }
+   ],
+   "projections": [
+    {
+     "name": "Alpha Starter",
+     "team_id": "CIN",
+     "position_id": "WR",
+     "stats": {
+      "points": 11.0
+     }
+    },
+    {
+     "name": "Small Bench",
+     "team_id": "MIN",
+     "position_id": "WR",
+     "stats": {
+      "points": 7.0
+     }
+    },
+    {
+     "name": "Big Bench",
+     "team_id": "GB",
+     "position_id": "RB",
+     "stats": {
+      "points": 9.0
+     }
+    },
+    {
+     "name": "Late Bench",
+     "team_id": "KC",
+     "position_id": "TE",
+     "stats": {
+      "points": 9.0
+     }
+    }
+   ],
+   "schedule": [
+    {
+     "away": "CIN",
+     "home": "TB",
+     "kick_utc": "2026-09-20T17:00Z",
+     "network": "CBS"
+    },
+    {
+     "away": "MIN",
+     "home": "CHI",
+     "kick_utc": "2026-09-20T17:00Z",
+     "network": "FOX"
+    },
+    {
+     "away": "GB",
+     "home": "DET",
+     "kick_utc": "2026-09-20T20:05Z",
+     "network": "FOX"
+    },
+    {
+     "away": "KC",
+     "home": "DEN",
+     "kick_utc": "2026-09-20T20:25Z",
+     "network": "CBS"
+    },
+    {
+     "away": "DAL",
+     "home": "PHI",
+     "kick_utc": "2026-09-21T00:20Z",
+     "network": "NBC"
+    }
+   ],
+   "expected": {
+    "slots": [
+     {
+      "label": "Sun 10am",
+      "games": [
+       {
+        "away": "CIN",
+        "home": "TB",
+        "kick": "2026-09-20T10:00:00-07:00",
+        "network": "CBS",
+        "starters": [
+         {
+          "name": "Alpha Starter",
+          "team": "CIN",
+          "pos": "WR",
+          "slot": "WR",
+          "yahoo_id": null,
+          "proj": 11.0,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 11.0,
+        "bench_pts": 0
+       },
+       {
+        "away": "MIN",
+        "home": "CHI",
+        "kick": "2026-09-20T10:00:00-07:00",
+        "network": "FOX",
+        "starters": [],
+        "bench": [
+         {
+          "name": "Small Bench",
+          "team": "MIN",
+          "pos": "WR",
+          "slot": "BN",
+          "yahoo_id": null,
+          "proj": 7.0,
+          "jersey": null
+         }
+        ],
+        "starter_pts": 0,
+        "bench_pts": 7.0
+       }
+      ]
+     },
+     {
+      "label": "Sun 1pm",
+      "games": [
+       {
+        "away": "GB",
+        "home": "DET",
+        "kick": "2026-09-20T13:05:00-07:00",
+        "network": "FOX",
+        "starters": [],
+        "bench": [
+         {
+          "name": "Big Bench",
+          "team": "GB",
+          "pos": "RB",
+          "slot": "BN",
+          "yahoo_id": null,
+          "proj": 9.0,
+          "jersey": null
+         }
+        ],
+        "starter_pts": 0,
+        "bench_pts": 9.0
+       },
+       {
+        "away": "KC",
+        "home": "DEN",
+        "kick": "2026-09-20T13:25:00-07:00",
+        "network": "CBS",
+        "starters": [],
+        "bench": [
+         {
+          "name": "Late Bench",
+          "team": "KC",
+          "pos": "TE",
+          "slot": "IR",
+          "yahoo_id": null,
+          "proj": 9.0,
+          "jersey": null
+         }
+        ],
+        "starter_pts": 0,
+        "bench_pts": 9.0
+       }
+      ]
+     },
+     {
+      "label": "Sun 5pm",
+      "games": [
+       {
+        "away": "DAL",
+        "home": "PHI",
+        "kick": "2026-09-20T17:20:00-07:00",
+        "network": "NBC",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       }
+      ]
+     }
+    ],
+    "idle": [],
+    "unmatched": []
+   }
+  },
+  {
+   "name": "1:05 and 1:25 kickoffs share a window",
+   "scoring": "ppr",
+   "players": [
+    {
+     "name": "Early Back",
+     "team": "GB",
+     "pos": "RB",
+     "slot": "RB"
+    },
+    {
+     "name": "Late Passer",
+     "team": "KC",
+     "pos": "QB",
+     "slot": "QB"
+    }
+   ],
+   "projections": [
+    {
+     "name": "Early Back",
+     "team_id": "GB",
+     "position_id": "RB",
+     "stats": {
+      "points": 9.0,
+      "points_half": 10.5,
+      "points_ppr": 12.0
+     }
+    },
+    {
+     "name": "Late Passer",
+     "team_id": "KC",
+     "position_id": "QB",
+     "stats": {
+      "points": 21.4,
+      "points_half": 21.4,
+      "points_ppr": 21.4
+     }
+    }
+   ],
+   "schedule": [
+    {
+     "away": "CIN",
+     "home": "TB",
+     "kick_utc": "2026-09-20T17:00Z",
+     "network": "CBS"
+    },
+    {
+     "away": "MIN",
+     "home": "CHI",
+     "kick_utc": "2026-09-20T17:00Z",
+     "network": "FOX"
+    },
+    {
+     "away": "GB",
+     "home": "DET",
+     "kick_utc": "2026-09-20T20:05Z",
+     "network": "FOX"
+    },
+    {
+     "away": "KC",
+     "home": "DEN",
+     "kick_utc": "2026-09-20T20:25Z",
+     "network": "CBS"
+    },
+    {
+     "away": "DAL",
+     "home": "PHI",
+     "kick_utc": "2026-09-21T00:20Z",
+     "network": "NBC"
+    }
+   ],
+   "expected": {
+    "slots": [
+     {
+      "label": "Sun 10am",
+      "games": [
+       {
+        "away": "CIN",
+        "home": "TB",
+        "kick": "2026-09-20T10:00:00-07:00",
+        "network": "CBS",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       },
+       {
+        "away": "MIN",
+        "home": "CHI",
+        "kick": "2026-09-20T10:00:00-07:00",
+        "network": "FOX",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       }
+      ]
+     },
+     {
+      "label": "Sun 1pm",
+      "games": [
+       {
+        "away": "KC",
+        "home": "DEN",
+        "kick": "2026-09-20T13:25:00-07:00",
+        "network": "CBS",
+        "starters": [
+         {
+          "name": "Late Passer",
+          "team": "KC",
+          "pos": "QB",
+          "slot": "QB",
+          "yahoo_id": null,
+          "proj": 21.4,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 21.4,
+        "bench_pts": 0
+       },
+       {
+        "away": "GB",
+        "home": "DET",
+        "kick": "2026-09-20T13:05:00-07:00",
+        "network": "FOX",
+        "starters": [
+         {
+          "name": "Early Back",
+          "team": "GB",
+          "pos": "RB",
+          "slot": "RB",
+          "yahoo_id": null,
+          "proj": 12.0,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 12.0,
+        "bench_pts": 0
+       }
+      ]
+     },
+     {
+      "label": "Sun 5pm",
+      "games": [
+       {
+        "away": "DAL",
+        "home": "PHI",
+        "kick": "2026-09-20T17:20:00-07:00",
+        "network": "NBC",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       }
+      ]
+     }
+    ],
+    "idle": [],
+    "unmatched": []
+   }
+  },
+  {
+   "name": "missing, zero and negative points stay distinct",
+   "scoring": "half",
+   "players": [
+    {
+     "name": "No Projection",
+     "team": "CIN",
+     "pos": "WR",
+     "slot": "WR"
+    },
+    {
+     "name": "Zero Points",
+     "team": "CIN",
+     "pos": "RB",
+     "slot": "RB"
+    },
+    {
+     "name": "Bad Defense",
+     "team": "MIN",
+     "pos": "DST",
+     "slot": "DEF"
+    },
+    {
+     "name": "Text Points",
+     "team": "CHI",
+     "pos": "K",
+     "slot": "K"
+    },
+    {
+     "name": "Infinite Points",
+     "team": "DET",
+     "pos": "TE",
+     "slot": "TE"
+    },
+    {
+     "name": "Std Only",
+     "team": "DEN",
+     "pos": "WR",
+     "slot": "WR"
+    }
+   ],
+   "projections": [
+    {
+     "name": "Zero Points",
+     "team_id": "CIN",
+     "position_id": "RB",
+     "stats": {
+      "points": 0,
+      "points_half": 0,
+      "points_ppr": 0
+     }
+    },
+    {
+     "name": "Minnesota Vikings",
+     "team_id": "MIN",
+     "position_id": "DST",
+     "stats": {
+      "points": -2.0,
+      "points_half": -2.0,
+      "points_ppr": -2.0
+     }
+    },
+    {
+     "name": "Text Points",
+     "team_id": "CHI",
+     "position_id": "K",
+     "stats": {
+      "points": "n/a",
+      "points_half": "n/a",
+      "points_ppr": "n/a"
+     }
+    },
+    {
+     "name": "Infinite Points",
+     "team_id": "DET",
+     "position_id": "TE",
+     "stats": {
+      "points": "inf",
+      "points_half": "inf",
+      "points_ppr": "inf"
+     }
+    },
+    {
+     "name": "Std Only",
+     "team_id": "DEN",
+     "position_id": "WR",
+     "stats": {
+      "points": 8.8
+     }
+    }
+   ],
+   "schedule": [
+    {
+     "away": "CIN",
+     "home": "TB",
+     "kick_utc": "2026-09-20T17:00Z",
+     "network": "CBS"
+    },
+    {
+     "away": "MIN",
+     "home": "CHI",
+     "kick_utc": "2026-09-20T17:00Z",
+     "network": "FOX"
+    },
+    {
+     "away": "GB",
+     "home": "DET",
+     "kick_utc": "2026-09-20T20:05Z",
+     "network": "FOX"
+    },
+    {
+     "away": "KC",
+     "home": "DEN",
+     "kick_utc": "2026-09-20T20:25Z",
+     "network": "CBS"
+    },
+    {
+     "away": "DAL",
+     "home": "PHI",
+     "kick_utc": "2026-09-21T00:20Z",
+     "network": "NBC"
+    }
+   ],
+   "expected": {
+    "slots": [
+     {
+      "label": "Sun 10am",
+      "games": [
+       {
+        "away": "CIN",
+        "home": "TB",
+        "kick": "2026-09-20T10:00:00-07:00",
+        "network": "CBS",
+        "starters": [
+         {
+          "name": "No Projection",
+          "team": "CIN",
+          "pos": "WR",
+          "slot": "WR",
+          "yahoo_id": null,
+          "proj": null,
+          "jersey": null
+         },
+         {
+          "name": "Zero Points",
+          "team": "CIN",
+          "pos": "RB",
+          "slot": "RB",
+          "yahoo_id": null,
+          "proj": 0.0,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 0.0,
+        "bench_pts": 0
+       },
+       {
+        "away": "MIN",
+        "home": "CHI",
+        "kick": "2026-09-20T10:00:00-07:00",
+        "network": "FOX",
+        "starters": [
+         {
+          "name": "Text Points",
+          "team": "CHI",
+          "pos": "K",
+          "slot": "K",
+          "yahoo_id": null,
+          "proj": null,
+          "jersey": null
+         },
+         {
+          "name": "Bad Defense",
+          "team": "MIN",
+          "pos": "DST",
+          "slot": "DEF",
+          "yahoo_id": null,
+          "proj": -2.0,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": -2.0,
+        "bench_pts": 0
+       }
+      ]
+     },
+     {
+      "label": "Sun 1pm",
+      "games": [
+       {
+        "away": "GB",
+        "home": "DET",
+        "kick": "2026-09-20T13:05:00-07:00",
+        "network": "FOX",
+        "starters": [
+         {
+          "name": "Infinite Points",
+          "team": "DET",
+          "pos": "TE",
+          "slot": "TE",
+          "yahoo_id": null,
+          "proj": null,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 0.0,
+        "bench_pts": 0
+       },
+       {
+        "away": "KC",
+        "home": "DEN",
+        "kick": "2026-09-20T13:25:00-07:00",
+        "network": "CBS",
+        "starters": [
+         {
+          "name": "Std Only",
+          "team": "DEN",
+          "pos": "WR",
+          "slot": "WR",
+          "yahoo_id": null,
+          "proj": null,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 0.0,
+        "bench_pts": 0
+       }
+      ]
+     },
+     {
+      "label": "Sun 5pm",
+      "games": [
+       {
+        "away": "DAL",
+        "home": "PHI",
+        "kick": "2026-09-20T17:20:00-07:00",
+        "network": "NBC",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       }
+      ]
+     }
+    ],
+    "idle": [],
+    "unmatched": [
+     {
+      "name": "No Projection",
+      "team": "CIN",
+      "pos": "WR",
+      "slot": "WR",
+      "yahoo_id": null,
+      "proj": null,
+      "jersey": null
+     },
+     {
+      "name": "Text Points",
+      "team": "CHI",
+      "pos": "K",
+      "slot": "K",
+      "yahoo_id": null,
+      "proj": null,
+      "jersey": null
+     },
+     {
+      "name": "Infinite Points",
+      "team": "DET",
+      "pos": "TE",
+      "slot": "TE",
+      "yahoo_id": null,
+      "proj": null,
+      "jersey": null
+     },
+     {
+      "name": "Std Only",
+      "team": "DEN",
+      "pos": "WR",
+      "slot": "WR",
+      "yahoo_id": null,
+      "proj": null,
+      "jersey": null
+     }
+    ]
+   }
+  },
+  {
+   "name": "names normalize; team aliases and a unique traded player resolve",
+   "scoring": "std",
+   "players": [
+    {
+     "name": "Ja’Marr Chase",
+     "team": "CIN",
+     "pos": "WR",
+     "slot": "WR"
+    },
+    {
+     "name": "Marvin Harrison Jr.",
+     "team": "DET",
+     "pos": "WR",
+     "slot": "WR"
+    },
+    {
+     "name": "Jósé Núñez III",
+     "team": "TB",
+     "pos": "K",
+     "slot": "K"
+    },
+    {
+     "name": "Traded Runner",
+     "team": "PHI",
+     "pos": "RB",
+     "slot": "RB"
+    },
+    {
+     "name": "Jaguars",
+     "team": "JAC",
+     "pos": "DST",
+     "slot": "DEF"
+    }
+   ],
+   "projections": [
+    {
+     "name": "Ja'Marr Chase",
+     "team_id": "CIN",
+     "position_id": "WR",
+     "stats": {
+      "points": 14.2
+     }
+    },
+    {
+     "name": "Marvin Harrison",
+     "team_id": "DET",
+     "position_id": "WR",
+     "stats": {
+      "points": 12.1
+     }
+    },
+    {
+     "name": "Jose Nunez",
+     "team_id": "TB",
+     "position_id": "K",
+     "stats": {
+      "points": 7.7
+     }
+    },
+    {
+     "name": "Traded Runner",
+     "team_id": "DAL",
+     "position_id": "RB",
+     "stats": {
+      "points": 10.0
+     }
+    },
+    {
+     "name": "Jacksonville Jaguars",
+     "team_id": "JAX",
+     "position_id": "DST",
+     "stats": {
+      "points": 6.5
+     }
+    }
+   ],
+   "schedule": [
+    {
+     "away": "CIN",
+     "home": "TB",
+     "kick_utc": "2026-09-20T17:00Z",
+     "network": "CBS"
+    },
+    {
+     "away": "MIN",
+     "home": "CHI",
+     "kick_utc": "2026-09-20T17:00Z",
+     "network": "FOX"
+    },
+    {
+     "away": "GB",
+     "home": "DET",
+     "kick_utc": "2026-09-20T20:05Z",
+     "network": "FOX"
+    },
+    {
+     "away": "KC",
+     "home": "DEN",
+     "kick_utc": "2026-09-20T20:25Z",
+     "network": "CBS"
+    },
+    {
+     "away": "DAL",
+     "home": "PHI",
+     "kick_utc": "2026-09-21T00:20Z",
+     "network": "NBC"
+    },
+    {
+     "away": "JAC",
+     "home": "WSH",
+     "kick_utc": "2026-09-20T17:00Z",
+     "network": "CBS"
+    }
+   ],
+   "expected": {
+    "slots": [
+     {
+      "label": "Sun 10am",
+      "games": [
+       {
+        "away": "CIN",
+        "home": "TB",
+        "kick": "2026-09-20T10:00:00-07:00",
+        "network": "CBS",
+        "starters": [
+         {
+          "name": "Ja’Marr Chase",
+          "team": "CIN",
+          "pos": "WR",
+          "slot": "WR",
+          "yahoo_id": null,
+          "proj": 14.2,
+          "jersey": null
+         },
+         {
+          "name": "Jósé Núñez III",
+          "team": "TB",
+          "pos": "K",
+          "slot": "K",
+          "yahoo_id": null,
+          "proj": 7.7,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 21.9,
+        "bench_pts": 0
+       },
+       {
+        "away": "JAX",
+        "home": "WAS",
+        "kick": "2026-09-20T10:00:00-07:00",
+        "network": "CBS",
+        "starters": [
+         {
+          "name": "Jaguars",
+          "team": "JAX",
+          "pos": "DST",
+          "slot": "DEF",
+          "yahoo_id": null,
+          "proj": 6.5,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 6.5,
+        "bench_pts": 0
+       },
+       {
+        "away": "MIN",
+        "home": "CHI",
+        "kick": "2026-09-20T10:00:00-07:00",
+        "network": "FOX",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       }
+      ]
+     },
+     {
+      "label": "Sun 1pm",
+      "games": [
+       {
+        "away": "GB",
+        "home": "DET",
+        "kick": "2026-09-20T13:05:00-07:00",
+        "network": "FOX",
+        "starters": [
+         {
+          "name": "Marvin Harrison Jr.",
+          "team": "DET",
+          "pos": "WR",
+          "slot": "WR",
+          "yahoo_id": null,
+          "proj": 12.1,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 12.1,
+        "bench_pts": 0
+       },
+       {
+        "away": "KC",
+        "home": "DEN",
+        "kick": "2026-09-20T13:25:00-07:00",
+        "network": "CBS",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       }
+      ]
+     },
+     {
+      "label": "Sun 5pm",
+      "games": [
+       {
+        "away": "DAL",
+        "home": "PHI",
+        "kick": "2026-09-20T17:20:00-07:00",
+        "network": "NBC",
+        "starters": [
+         {
+          "name": "Traded Runner",
+          "team": "PHI",
+          "pos": "RB",
+          "slot": "RB",
+          "yahoo_id": null,
+          "proj": 10.0,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 10.0,
+        "bench_pts": 0
+       }
+      ]
+     }
+    ],
+    "idle": [],
+    "unmatched": []
+   }
+  },
+  {
+   "name": "a shared name on two other teams is never guessed",
+   "scoring": "std",
+   "players": [
+    {
+     "name": "Josh Allen",
+     "team": "KC",
+     "pos": "QB",
+     "slot": "QB"
+    }
+   ],
+   "projections": [
+    {
+     "name": "Josh Allen",
+     "team_id": "BUF",
+     "position_id": "QB",
+     "stats": {
+      "points": 24.0
+     }
+    },
+    {
+     "name": "Josh Allen",
+     "team_id": "JAX",
+     "position_id": "LB",
+     "stats": {
+      "points": 3.0
+     }
+    }
+   ],
+   "schedule": [
+    {
+     "away": "CIN",
+     "home": "TB",
+     "kick_utc": "2026-09-20T17:00Z",
+     "network": "CBS"
+    },
+    {
+     "away": "MIN",
+     "home": "CHI",
+     "kick_utc": "2026-09-20T17:00Z",
+     "network": "FOX"
+    },
+    {
+     "away": "GB",
+     "home": "DET",
+     "kick_utc": "2026-09-20T20:05Z",
+     "network": "FOX"
+    },
+    {
+     "away": "KC",
+     "home": "DEN",
+     "kick_utc": "2026-09-20T20:25Z",
+     "network": "CBS"
+    },
+    {
+     "away": "DAL",
+     "home": "PHI",
+     "kick_utc": "2026-09-21T00:20Z",
+     "network": "NBC"
+    }
+   ],
+   "expected": {
+    "slots": [
+     {
+      "label": "Sun 10am",
+      "games": [
+       {
+        "away": "CIN",
+        "home": "TB",
+        "kick": "2026-09-20T10:00:00-07:00",
+        "network": "CBS",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       },
+       {
+        "away": "MIN",
+        "home": "CHI",
+        "kick": "2026-09-20T10:00:00-07:00",
+        "network": "FOX",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       }
+      ]
+     },
+     {
+      "label": "Sun 1pm",
+      "games": [
+       {
+        "away": "GB",
+        "home": "DET",
+        "kick": "2026-09-20T13:05:00-07:00",
+        "network": "FOX",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       },
+       {
+        "away": "KC",
+        "home": "DEN",
+        "kick": "2026-09-20T13:25:00-07:00",
+        "network": "CBS",
+        "starters": [
+         {
+          "name": "Josh Allen",
+          "team": "KC",
+          "pos": "QB",
+          "slot": "QB",
+          "yahoo_id": null,
+          "proj": null,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 0.0,
+        "bench_pts": 0
+       }
+      ]
+     },
+     {
+      "label": "Sun 5pm",
+      "games": [
+       {
+        "away": "DAL",
+        "home": "PHI",
+        "kick": "2026-09-20T17:20:00-07:00",
+        "network": "NBC",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       }
+      ]
+     }
+    ],
+    "idle": [],
+    "unmatched": [
+     {
+      "name": "Josh Allen",
+      "team": "KC",
+      "pos": "QB",
+      "slot": "QB",
+      "yahoo_id": null,
+      "proj": null,
+      "jersey": null
+     }
+    ]
+   }
+  },
+  {
+   "name": "bye-week players are idle, not dropped",
+   "scoring": "std",
+   "players": [
+    {
+     "name": "On Bye",
+     "team": "SEA",
+     "pos": "WR",
+     "slot": "WR"
+    },
+    {
+     "name": "Playing",
+     "team": "DAL",
+     "pos": "QB",
+     "slot": "QB"
+    }
+   ],
+   "projections": [
+    {
+     "name": "On Bye",
+     "team_id": "SEA",
+     "position_id": "WR",
+     "stats": {
+      "points": 13.0
+     }
+    },
+    {
+     "name": "Playing",
+     "team_id": "DAL",
+     "position_id": "QB",
+     "stats": {
+      "points": 19.5
+     }
+    }
+   ],
+   "schedule": [
+    {
+     "away": "CIN",
+     "home": "TB",
+     "kick_utc": "2026-09-20T17:00Z",
+     "network": "CBS"
+    },
+    {
+     "away": "MIN",
+     "home": "CHI",
+     "kick_utc": "2026-09-20T17:00Z",
+     "network": "FOX"
+    },
+    {
+     "away": "GB",
+     "home": "DET",
+     "kick_utc": "2026-09-20T20:05Z",
+     "network": "FOX"
+    },
+    {
+     "away": "KC",
+     "home": "DEN",
+     "kick_utc": "2026-09-20T20:25Z",
+     "network": "CBS"
+    },
+    {
+     "away": "DAL",
+     "home": "PHI",
+     "kick_utc": "2026-09-21T00:20Z",
+     "network": "NBC"
+    }
+   ],
+   "expected": {
+    "slots": [
+     {
+      "label": "Sun 10am",
+      "games": [
+       {
+        "away": "CIN",
+        "home": "TB",
+        "kick": "2026-09-20T10:00:00-07:00",
+        "network": "CBS",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       },
+       {
+        "away": "MIN",
+        "home": "CHI",
+        "kick": "2026-09-20T10:00:00-07:00",
+        "network": "FOX",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       }
+      ]
+     },
+     {
+      "label": "Sun 1pm",
+      "games": [
+       {
+        "away": "GB",
+        "home": "DET",
+        "kick": "2026-09-20T13:05:00-07:00",
+        "network": "FOX",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       },
+       {
+        "away": "KC",
+        "home": "DEN",
+        "kick": "2026-09-20T13:25:00-07:00",
+        "network": "CBS",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       }
+      ]
+     },
+     {
+      "label": "Sun 5pm",
+      "games": [
+       {
+        "away": "DAL",
+        "home": "PHI",
+        "kick": "2026-09-20T17:20:00-07:00",
+        "network": "NBC",
+        "starters": [
+         {
+          "name": "Playing",
+          "team": "DAL",
+          "pos": "QB",
+          "slot": "QB",
+          "yahoo_id": null,
+          "proj": 19.5,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 19.5,
+        "bench_pts": 0
+       }
+      ]
+     }
+    ],
+    "idle": [
+     {
+      "name": "On Bye",
+      "team": "SEA",
+      "pos": "WR",
+      "slot": "WR",
+      "yahoo_id": null,
+      "proj": 13.0,
+      "jersey": null
+     }
+    ],
+    "unmatched": []
+   }
+  },
+  {
+   "name": "windows order across days and late-night UTC dates",
+   "scoring": "std",
+   "players": [
+    {
+     "name": "Thursday Kicker",
+     "team": "BUF",
+     "pos": "K",
+     "slot": "K"
+    },
+    {
+     "name": "London Receiver",
+     "team": "JAX",
+     "pos": "WR",
+     "slot": "WR"
+    },
+    {
+     "name": "Sunday Night",
+     "team": "PHI",
+     "pos": "RB",
+     "slot": "RB"
+    },
+    {
+     "name": "Monday Night",
+     "team": "LAC",
+     "pos": "QB",
+     "slot": "QB"
+    }
+   ],
+   "projections": [
+    {
+     "name": "Thursday Kicker",
+     "team_id": "BUF",
+     "position_id": "K",
+     "stats": {
+      "points": 8.0
+     }
+    },
+    {
+     "name": "London Receiver",
+     "team_id": "JAX",
+     "position_id": "WR",
+     "stats": {
+      "points": 12.5
+     }
+    },
+    {
+     "name": "Sunday Night",
+     "team_id": "PHI",
+     "position_id": "RB",
+     "stats": {
+      "points": 16.0
+     }
+    },
+    {
+     "name": "Monday Night",
+     "team_id": "LAC",
+     "position_id": "QB",
+     "stats": {
+      "points": 18.2
+     }
+    }
+   ],
+   "schedule": [
+    {
+     "away": "LAC",
+     "home": "LV",
+     "kick_utc": "2026-09-22T02:15Z",
+     "network": "ESPN"
+    },
+    {
+     "away": "DAL",
+     "home": "PHI",
+     "kick_utc": "2026-09-21T00:20Z",
+     "network": "NBC"
+    },
+    {
+     "away": "JAX",
+     "home": "ATL",
+     "kick_utc": "2026-09-20T13:30Z",
+     "network": "NFLN"
+    },
+    {
+     "away": "MIA",
+     "home": "BUF",
+     "kick_utc": "2026-09-18T00:15Z",
+     "network": "PRIME"
+    }
+   ],
+   "expected": {
+    "slots": [
+     {
+      "label": "Thu 5pm",
+      "games": [
+       {
+        "away": "MIA",
+        "home": "BUF",
+        "kick": "2026-09-17T17:15:00-07:00",
+        "network": "PRIME",
+        "starters": [
+         {
+          "name": "Thursday Kicker",
+          "team": "BUF",
+          "pos": "K",
+          "slot": "K",
+          "yahoo_id": null,
+          "proj": 8.0,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 8.0,
+        "bench_pts": 0
+       }
+      ]
+     },
+     {
+      "label": "Sun 6am",
+      "games": [
+       {
+        "away": "JAX",
+        "home": "ATL",
+        "kick": "2026-09-20T06:30:00-07:00",
+        "network": "NFLN",
+        "starters": [
+         {
+          "name": "London Receiver",
+          "team": "JAX",
+          "pos": "WR",
+          "slot": "WR",
+          "yahoo_id": null,
+          "proj": 12.5,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 12.5,
+        "bench_pts": 0
+       }
+      ]
+     },
+     {
+      "label": "Sun 5pm",
+      "games": [
+       {
+        "away": "DAL",
+        "home": "PHI",
+        "kick": "2026-09-20T17:20:00-07:00",
+        "network": "NBC",
+        "starters": [
+         {
+          "name": "Sunday Night",
+          "team": "PHI",
+          "pos": "RB",
+          "slot": "RB",
+          "yahoo_id": null,
+          "proj": 16.0,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 16.0,
+        "bench_pts": 0
+       }
+      ]
+     },
+     {
+      "label": "Mon 7pm",
+      "games": [
+       {
+        "away": "LAC",
+        "home": "LV",
+        "kick": "2026-09-21T19:15:00-07:00",
+        "network": "ESPN",
+        "starters": [
+         {
+          "name": "Monday Night",
+          "team": "LAC",
+          "pos": "QB",
+          "slot": "QB",
+          "yahoo_id": null,
+          "proj": 18.2,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 18.2,
+        "bench_pts": 0
+       }
+      ]
+     }
+    ],
+    "idle": [],
+    "unmatched": []
+   }
+  },
+  {
+   "name": "equal games keep schedule order",
+   "scoring": "std",
+   "players": [
+    {
+     "name": "Left",
+     "team": "CIN",
+     "pos": "WR",
+     "slot": "WR"
+    },
+    {
+     "name": "Right",
+     "team": "CHI",
+     "pos": "WR",
+     "slot": "WR"
+    }
+   ],
+   "projections": [
+    {
+     "name": "Left",
+     "team_id": "CIN",
+     "position_id": "WR",
+     "stats": {
+      "points": 10.0
+     }
+    },
+    {
+     "name": "Right",
+     "team_id": "CHI",
+     "position_id": "WR",
+     "stats": {
+      "points": 10.0
+     }
+    }
+   ],
+   "schedule": [
+    {
+     "away": "CIN",
+     "home": "TB",
+     "kick_utc": "2026-09-20T17:00Z",
+     "network": "CBS"
+    },
+    {
+     "away": "MIN",
+     "home": "CHI",
+     "kick_utc": "2026-09-20T17:00Z",
+     "network": "FOX"
+    },
+    {
+     "away": "GB",
+     "home": "DET",
+     "kick_utc": "2026-09-20T20:05Z",
+     "network": "FOX"
+    },
+    {
+     "away": "KC",
+     "home": "DEN",
+     "kick_utc": "2026-09-20T20:25Z",
+     "network": "CBS"
+    },
+    {
+     "away": "DAL",
+     "home": "PHI",
+     "kick_utc": "2026-09-21T00:20Z",
+     "network": "NBC"
+    }
+   ],
+   "expected": {
+    "slots": [
+     {
+      "label": "Sun 10am",
+      "games": [
+       {
+        "away": "CIN",
+        "home": "TB",
+        "kick": "2026-09-20T10:00:00-07:00",
+        "network": "CBS",
+        "starters": [
+         {
+          "name": "Left",
+          "team": "CIN",
+          "pos": "WR",
+          "slot": "WR",
+          "yahoo_id": null,
+          "proj": 10.0,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 10.0,
+        "bench_pts": 0
+       },
+       {
+        "away": "MIN",
+        "home": "CHI",
+        "kick": "2026-09-20T10:00:00-07:00",
+        "network": "FOX",
+        "starters": [
+         {
+          "name": "Right",
+          "team": "CHI",
+          "pos": "WR",
+          "slot": "WR",
+          "yahoo_id": null,
+          "proj": 10.0,
+          "jersey": null
+         }
+        ],
+        "bench": [],
+        "starter_pts": 10.0,
+        "bench_pts": 0
+       }
+      ]
+     },
+     {
+      "label": "Sun 1pm",
+      "games": [
+       {
+        "away": "GB",
+        "home": "DET",
+        "kick": "2026-09-20T13:05:00-07:00",
+        "network": "FOX",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       },
+       {
+        "away": "KC",
+        "home": "DEN",
+        "kick": "2026-09-20T13:25:00-07:00",
+        "network": "CBS",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       }
+      ]
+     },
+     {
+      "label": "Sun 5pm",
+      "games": [
+       {
+        "away": "DAL",
+        "home": "PHI",
+        "kick": "2026-09-20T17:20:00-07:00",
+        "network": "NBC",
+        "starters": [],
+        "bench": [],
+        "starter_pts": 0,
+        "bench_pts": 0
+       }
+      ]
+     }
+    ],
+    "idle": [],
+    "unmatched": []
+   }
+  }
+ ]
+}

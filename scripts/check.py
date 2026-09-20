@@ -1,5 +1,6 @@
 """Small local quality gate; no network or provider data is needed."""
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 
@@ -26,7 +27,15 @@ def main():
         result = subprocess.run(command, cwd=ROOT)
         if result.returncode:
             return result.returncode
-    return 0
+    return browser_checks()
+
+
+def browser_checks():
+    npm = shutil.which("npm")
+    if not npm or not (ROOT / "node_modules").is_dir():
+        print("Skipping browser checks: run `npm ci` to enable them.")
+        return 0
+    return subprocess.run([npm, "run", "--silent", "check"], cwd=ROOT).returncode
 
 
 if __name__ == "__main__":

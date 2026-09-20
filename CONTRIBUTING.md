@@ -12,6 +12,15 @@ uv run pytest -q
 uv run ruff check --select E9,F .
 ```
 
+The browser ranker in `web/` is TypeScript with no runtime dependencies. With Node 22.18+:
+
+```sh
+npm ci
+npm run check
+```
+
+`scripts/check.py` runs these too once `node_modules/` exists. The Python core and the browser ranker must agree: `tests/parity/rank_cases.json` is generated from the Python core by `uv run python scripts/make_parity_fixtures.py`, and both test suites read it. Change ranking behavior in both places, regenerate, and commit the result.
+
 Install opt-in hooks with `uv run python scripts/install_hooks.py`. The pre-commit hook checks tracked-file hygiene, Ruff, and offline pytest; the commit-msg hook rejects AI co-author trailers but permits human co-authors. There is no CI requirement yet, so local checks are the source of truth for this slice.
 
 `uv run ff-watchlist` serves on `127.0.0.1:8793` by default. Use `--demo` for synthetic, fully offline data. The frozen 2026 week 2 example is a clearly labeled demo; choose the actual season and week when using real data.

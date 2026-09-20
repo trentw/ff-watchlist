@@ -6,7 +6,8 @@ FF Watchlist is a small FastAPI service for assembling a fantasy-football watchl
 
 - `src/ff_watchlist/` contains the application package and its `watch_core`, `watch_lineup`, `watch_sources`, `watch_media`, and `watch_public` modules.
 - `src/ff_watchlist/watch_public_static/` contains the current HTML, CSS, and JavaScript surface.
-- `tests/` contains offline tests.
+- `web/` contains the TypeScript browser ranker and its tests. It has no runtime dependencies.
+- `tests/` contains offline tests; `tests/parity/` holds ranking cases shared with `web/`.
 - `docs/` contains project architecture and contributor-facing notes.
 - `PROJECT-PLAN.md` and `.local/` are private internal notes and should remain untracked.
 
@@ -19,6 +20,8 @@ uv run python scripts/check.py
 uv run pytest -q
 uv run ruff check --select E9,F .
 ```
+
+Browser code needs Node 22.18+: run `npm ci`, then `npm run check` (type check and tests; `scripts/check.py` includes it once installed). After changing ranking behavior, regenerate the shared cases with `uv run python scripts/make_parity_fixtures.py` and keep both suites passing.
 
 Tests must be offline. The `uv run ff-watchlist` command defaults to `127.0.0.1:8793`; `--demo` uses synthetic, fully offline data. The frozen 2026 week 2 example is retained as a clearly labeled demo; users select the actual season and week for real use. Do not add dependencies unless the change clearly requires one and the dependency is documented. Install opt-in hooks through `uv run python scripts/install_hooks.py`: pre-commit checks tracked-file hygiene, Ruff, and offline pytest; commit-msg rejects AI co-author trailers while allowing human co-authors.
 
@@ -35,6 +38,8 @@ Add or update tests for behavior that matters, keep public API changes documente
 - Read README, CONTRIBUTING and the relevant module before editing. Keep this
   file short; put enduring design explanations in docs/architecture.md.
 - Reuse the core calculation rather than restating ranking in a new surface.
+  The Python core and `web/src/core.ts` are the only two rankers; the parity
+  cases keep them identical.
   Missing points are not zero, bench points only break starter ties, and name
   ambiguity must remain explicit. Preserve timezone-aware kickoff grouping.
 - Keep provider I/O outside the core. Date caches, preserve real source times,
