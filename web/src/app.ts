@@ -1,7 +1,7 @@
 import { attachProjections, isStarter, normName, canonTeam, rank } from "./core.ts";
 import type { Player, RankedGame, Ranking, Scoring } from "./core.ts";
 import { age, fetchBundle, fetchManifest } from "./data.ts";
-import type { Bundle } from "./data.ts";
+import type { Bundle, OffSeasonManifest } from "./data.ts";
 import { parseLineup } from "./lineup.ts";
 import type { LineupIssue, LineupPlayer } from "./lineup.ts";
 import { decodeShare, emptyRoster, encodeShare, loadRoster, resolveRoster, saveRoster } from "./roster.ts";
@@ -21,6 +21,7 @@ const storage = (() => {
 })();
 
 let bundle: Bundle | null = null;
+let offSeason: OffSeasonManifest | null = null;
 let index: SearchIndexEntry[] = [];
 let roster: Roster = emptyRoster();
 let viewingShared = false;
@@ -300,10 +301,29 @@ function renderNotices(ranking: Ranking, missing: number): void {
   box.append(notice);
 }
 
+/** Nothing to rank: say so, and leave the saved lineup untouched for next season. */
+function renderOffSeason(manifest: OffSeasonManifest): void {
+  $("board-season").textContent = String(manifest.season);
+  $("status").textContent = manifest.phase === "pre"
+    ? `The ${manifest.season} regular season hasn’t started. Matchups appear once Week 1 is scheduled.`
+    : `The ${manifest.season} fantasy regular season is over. See you next season.`;
+  $("placeholder-title").textContent = manifest.phase === "pre" ? "Almost kickoff." : "See you next season.";
+  $("placeholder-text").textContent = roster.entries.length
+    ? "Your saved lineup is still here and will be ready when the games are."
+    : "Come back when the regular season is under way.";
+  $("placeholder").hidden = false;
+  $("share").hidden = true;
+  $("results").replaceChildren();
+  $("issues").replaceChildren();
+  $("controls").hidden = true;
+}
+
 function render(): void {
   $("board-scoring").textContent = SCORING_BOARD[roster.scoring];
   $<HTMLSelectElement>("scoring").value = roster.scoring;
+  if (offSeason) return renderOffSeason(offSeason);
   if (!bundle) return;
+  $("controls").hidden = false;
   $("board-week").textContent = String(bundle.manifest.week).padStart(2, "0");
   $("board-season").textContent = String(bundle.manifest.season);
   const { players, missing } = resolveRoster(roster, bundle.directory);
@@ -321,26 +341,34 @@ function render(): void {
 
 // ------------------------------------------------------------------------ start
 
+function use(loaded: Bundle | OffSeasonManifest): void {
+  if ("manifest" in loaded) {
+    [bundle, offSeason] = [loaded, null];
+    index = buildIndex(loaded.directory);
+    $<HTMLInputElement>("search").disabled = false;
+  } else {
+    [bundle, offSeason] = [null, loaded];
+  }
+}
+
 async function load(): Promise<void> {
   try {
-    bundle = await fetchBundle(DATA_BASE);
+    use(await fetchBundle(DATA_BASE));
   } catch {
     $("status").textContent = "This week’s data isn’t available right now. Please try again shortly.";
     return;
   }
-  index = buildIndex(bundle.directory);
-  $<HTMLInputElement>("search").disabled = false;
   render();
 }
 
 /** Pick up a newer bundle when the tab is looked at again, without a reload. */
 async function refreshIfNewer(): Promise<void> {
-  if (document.visibilityState !== "visible" || !bundle) return;
+  const shown = bundle?.manifest ?? offSeason;
+  if (document.visibilityState !== "visible" || !shown) return;
   try {
     const manifest = await fetchManifest(DATA_BASE);
-    if (manifest.generated_at === bundle.manifest.generated_at) return;
-    bundle = await fetchBundle(DATA_BASE, manifest);
-    index = buildIndex(bundle.directory);
+    if (manifest.generated_at === shown.generated_at) return;
+    use(await fetchBundle(DATA_BASE, manifest));
   } catch {
     // Keep showing the bundle already loaded; its age is on screen.
   }

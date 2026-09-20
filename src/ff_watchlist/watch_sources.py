@@ -194,8 +194,12 @@ class PublicSources:
         except (httpx.HTTPError, ValueError) as exc:
             raise SourceUnavailable(f"{url}: {exc}") from exc
 
-    def current_week(self) -> tuple[int, int]:
-        """Return Sleeper's current regular-season ``(season, week)``."""
+    def season_state(self) -> dict[str, Any]:
+        """Return ``{"season", "phase", "week"}`` from Sleeper.
+
+        ``phase`` is Sleeper's season type (``pre``, ``regular``, ``post`` or
+        ``off``); ``week`` is ``None`` outside the regular season.
+        """
         path = self.cache_dir / "sleeper-state.json"
 
         def fetch() -> tuple[dict[str, Any], str]:
@@ -206,15 +210,14 @@ class PublicSources:
 
         state, _ = self._cached_or_fetch(path, source="sleeper-state", endpoint=_SLEEPER_STATE,
                                           fetch=fetch, decode=json.loads)
-        if not isinstance(state, dict) or state.get("season_type") != "regular":
-            raise SourceUnavailable("Sleeper does not report a regular-season week")
         try:
-            season, week = int(state["season"]), int(state.get("display_week") or state["week"])
+            season, phase = int(state["season"]), str(state["season_type"])
+            week = int(state.get("display_week") or state["week"]) if phase == "regular" else None
         except (KeyError, TypeError, ValueError) as exc:
             raise SourceUnavailable("Sleeper state had no usable season and week") from exc
-        if not 1 <= week <= 18:
+        if week is not None and not 1 <= week <= 18:
             raise SourceUnavailable(f"Sleeper reported week {week}, outside the regular season")
-        return season, week
+        return {"season": season, "phase": phase, "week": week}
 
     def players(self) -> dict[str, Any]:
         """Return Sleeper's raw NFL player directory, preserving its shape."""

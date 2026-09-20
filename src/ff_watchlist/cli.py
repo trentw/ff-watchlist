@@ -21,7 +21,8 @@ def _export(args):
     except (InvalidBundle, SourceUnavailable) as exc:
         print(f"export failed, existing bundle left in place: {exc}", file=sys.stderr)
         return 1
-    print(f"wrote {args.out}: {manifest['season']} week {manifest['week']}")
+    week = f"week {manifest['week']}" if manifest["week"] else f"no current week ({manifest['phase']})"
+    print(f"wrote {args.out}: {manifest['season']} {week}")
     return 0
 
 

@@ -11,7 +11,7 @@ Sleeper, ESPN -> watch_sources -> export -> web/dist/data/*.json
 ## Python: `src/ff_watchlist`
 
 - `watch_sources` holds the provider adapters. All network access lives here, with timeouts, dated caches under `data/` and provenance; an unusable response raises `SourceUnavailable` rather than producing invented data.
-- `export` turns one week of source data into the bundle: a slim player directory, schedule rows, projection rows and a manifest with sources, fetch times and image switches. The bundle is staged and validated as a whole and only then replaces the previous one.
+- `export` turns one week of source data into the bundle: a slim player directory, schedule rows, projection rows and a manifest with sources, fetch times and image switches. The bundle is staged and validated as a whole and only then replaces the previous one. Outside the regular season it is a manifest alone.
 - `watch_core` (projection join and ranking) and `watch_lineup` (paste parser) are the reference implementations of the browser logic.
 - `demo` supplies authored data so everything runs offline.
 - `cli` exposes `export` and `serve`.
