@@ -1,10 +1,8 @@
-"""Credential-free data sources for the public ``watch`` experiment.
+"""Credential-free data sources.
 
-The private watch command has a deliberately small fetcher contract, but its
-sources include FantasyPros credentials.  This module keeps the public path
-separate: Sleeper supplies a player directory and weekly projections, while
-ESPN supplies the NFL scoreboard.  Every response is cached below a dated
-directory so a generated page can be replayed without network access.
+Sleeper supplies a player directory and weekly projections, while ESPN
+supplies the NFL scoreboard.  Every response is cached below a dated
+directory so a result can be replayed without network access.
 
 The Sleeper projections endpoint is not a documented API.  The endpoint and
 the response fields are kept in one adapter so a change there produces an

@@ -1,4 +1,4 @@
-"""Public and personal callers share the same ranker and honest missing data."""
+"""The JSON ranking contract keeps bench, unknown and idle players distinct."""
 import json
 from ff_watchlist import watch_core as core
 
