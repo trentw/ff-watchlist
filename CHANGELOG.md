@@ -13,6 +13,8 @@ The format follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/
   timezone, visible data age and optional team logos and headshots.
 - `ff-watchlist export` writes a validated weekly data bundle; `ff-watchlist
   serve` previews the built site. `--demo` data is synthetic and offline.
+- Outside the regular season the export publishes a manifest alone and the
+  page says so, keeping the saved lineup.
 - Shared parity cases hold the TypeScript ranking and lineup parsing to the
   Python reference implementations.
 - Contributor guidance and opt-in code-quality and commit-message hooks.

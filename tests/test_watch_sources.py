@@ -124,12 +124,15 @@ def test_projection_identity_falls_back_to_nested_row_and_summarizes_diagnostics
     assert result["diagnostics"]["details"]
 
 
-def test_current_week_requires_the_regular_season(monkeypatch, tmp_path: Path):
+def test_season_state_has_a_week_only_in_the_regular_season(monkeypatch, tmp_path: Path):
     state = {"season": "2026", "season_type": "regular", "week": 2, "display_week": 3}
     monkeypatch.setattr("ff_watchlist.watch_sources.httpx.get", lambda *a, **k: _Response(state))
-    assert PublicSources(tmp_path / "in").current_week() == (2026, 3)
+    assert PublicSources(tmp_path / "in").season_state() == {"season": 2026, "phase": "regular", "week": 3}
 
-    state = {"season": "2026", "season_type": "off", "week": 0}
+    state = {"season": "2026", "season_type": "post", "week": 1}
     monkeypatch.setattr("ff_watchlist.watch_sources.httpx.get", lambda *a, **k: _Response(state))
+    assert PublicSources(tmp_path / "post").season_state() == {"season": 2026, "phase": "post", "week": None}
+
+    monkeypatch.setattr("ff_watchlist.watch_sources.httpx.get", lambda *a, **k: _Response({"season": "2026"}))
     with pytest.raises(SourceUnavailable):
-        PublicSources(tmp_path / "off").current_week()
+        PublicSources(tmp_path / "bad").season_state()

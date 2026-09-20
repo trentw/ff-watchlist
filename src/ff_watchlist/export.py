@@ -3,7 +3,8 @@
 A bundle is one week of shared facts: a slim player directory, the schedule
 and projection rows, plus a manifest naming each source and when it was
 fetched. It is staged and validated as a whole, so a bad provider response
-never replaces a good bundle.
+never replaces a good bundle. Outside the regular season the bundle is a
+manifest alone, which tells the app there is nothing to rank.
 """
 from __future__ import annotations
 
@@ -85,23 +86,49 @@ def _write(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, separators=(",", ":"), ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+def _now() -> str:
+    return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _replace(out_dir: Path, files: dict[str, Any]) -> None:
+    out_dir = Path(out_dir)
+    out_dir.parent.mkdir(parents=True, exist_ok=True)
+    staged = Path(tempfile.mkdtemp(prefix=".bundle-", dir=out_dir.parent))
+    try:
+        for name, value in files.items():
+            _write(staged / name, value)
+        staged.chmod(0o755)
+        if out_dir.exists():
+            shutil.rmtree(out_dir)
+        staged.rename(out_dir)
+    finally:
+        shutil.rmtree(staged, ignore_errors=True)
+
+
 def write_bundle(sources: Any, out_dir: Path, *, season: int | None = None, week: int | None = None,
                  demo: bool = False, headshots: bool = True, logos: bool = True) -> dict[str, Any]:
     """Collect one week from ``sources`` and replace ``out_dir`` with it."""
+    phase = "regular"
     if season is None or week is None:
-        season, week = sources.current_week()
+        state = sources.season_state()
+        season, week, phase = state["season"], state["week"], state["phase"]
+    if week is None:
+        manifest = {"schema": SCHEMA_VERSION, "generated_at": _now(), "season": season, "week": None,
+                    "phase": phase, "demo": demo}
+        _replace(out_dir, {"manifest.json": manifest})
+        return manifest
+
     players = slim_directory(sources.players())
     schedule = sources.schedule(season, week)
     projections = sources.projections(season, week, "std")
     rows = projections["rows"]
     _validate(players, schedule, rows, demo=demo)
-
-    now = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
     manifest = {
         "schema": SCHEMA_VERSION,
-        "generated_at": now,
+        "generated_at": _now(),
         "season": season,
         "week": week,
+        "phase": phase,
         "demo": demo,
         "projections": {
             "source": projections.get("source"),
@@ -111,19 +138,6 @@ def write_bundle(sources: Any, out_dir: Path, *, season: int | None = None, week
         "media": {"headshots": headshots and not demo, "logos": logos and not demo},
         "files": {"players": "players.json", "schedule": "schedule.json", "projections": "projections.json"},
     }
-
-    out_dir = Path(out_dir)
-    out_dir.parent.mkdir(parents=True, exist_ok=True)
-    staged = Path(tempfile.mkdtemp(prefix=".bundle-", dir=out_dir.parent))
-    try:
-        _write(staged / "players.json", players)
-        _write(staged / "schedule.json", schedule)
-        _write(staged / "projections.json", rows)
-        _write(staged / "manifest.json", manifest)
-        staged.chmod(0o755)
-        if out_dir.exists():
-            shutil.rmtree(out_dir)
-        staged.rename(out_dir)
-    finally:
-        shutil.rmtree(staged, ignore_errors=True)
+    _replace(out_dir, {"players.json": players, "schedule.json": schedule, "projections.json": rows,
+                       "manifest.json": manifest})
     return manifest

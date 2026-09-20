@@ -3,19 +3,31 @@
 import type { ProjectionRow, ScheduledGame } from "./core.ts";
 import type { Directory } from "./lineup.ts";
 
-export interface Manifest {
+interface ManifestBase {
   schema: number;
   generated_at: string;
   season: number;
-  week: number;
+  /** Sleeper's season type: "pre", "regular", "post" or "off". */
+  phase: string;
   demo: boolean;
+}
+
+export interface WeekManifest extends ManifestBase {
+  week: number;
   projections: { source: string | null; attribution: string | null; fetched_at: string | null };
   media: { headshots: boolean; logos: boolean };
   files: { players: string; schedule: string; projections: string };
 }
 
+/** Published outside the regular season: there is no week to rank. */
+export interface OffSeasonManifest extends ManifestBase {
+  week: null;
+}
+
+export type Manifest = WeekManifest | OffSeasonManifest;
+
 export interface Bundle {
-  manifest: Manifest;
+  manifest: WeekManifest;
   directory: Directory;
   schedule: ScheduledGame[];
   projections: ProjectionRow[];
@@ -33,9 +45,10 @@ export function fetchManifest(base: string): Promise<Manifest> {
   return getJson<Manifest>(`${base}manifest.json`, { cache: "no-cache" });
 }
 
-export async function fetchBundle(base: string, manifest?: Manifest): Promise<Bundle> {
+export async function fetchBundle(base: string, manifest?: Manifest): Promise<Bundle | OffSeasonManifest> {
   const current = manifest ?? (await fetchManifest(base));
   if (current.schema !== SUPPORTED_SCHEMA) throw new Error(`unsupported data schema ${current.schema}`);
+  if (current.week === null) return current;
   // Files are replaced together, so the generation time versions all of them.
   const file = (name: string) => `${base}${name}?v=${encodeURIComponent(current.generated_at)}`;
   const [directory, schedule, projections] = await Promise.all([

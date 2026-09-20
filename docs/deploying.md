@@ -19,7 +19,11 @@ Set the repository variable `SHOW_HEADSHOTS` or `SHOW_LOGOS` to `false` and run 
 
 ## Off-season
 
-Outside the regular season the export has no current week and the scheduled job fails without deploying. Disable the Publish workflow until the season starts. GitHub also pauses scheduled workflows after 60 days without repository activity; re-enable it from the Actions tab.
+Outside the regular season the export writes a manifest with no week, and the page says the season is over while keeping the visitor's saved lineup. The scheduled job keeps succeeding; disable the Publish workflow if you would rather not run it. GitHub pauses scheduled workflows after 60 days without repository activity, so re-enable it from the Actions tab before the season starts.
+
+## The www redirect
+
+`infra/www-redirect` is a separate five-line Worker that redirects `www.ffwatchlist.com` to the bare domain, so a saved lineup lives under one origin. It changes rarely and is deployed by hand with `npx wrangler deploy --cwd infra/www-redirect`.
 
 ## By hand
 

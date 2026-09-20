@@ -67,3 +67,18 @@ def test_invalid_data_leaves_the_previous_bundle_in_place(tmp_path):
 def test_real_bundles_need_broad_projection_coverage(tmp_path):
     with pytest.raises(InvalidBundle, match="only 4 players"):
         write_bundle(DemoSources(), tmp_path / "data", demo=False)
+
+
+def test_outside_the_regular_season_the_bundle_is_a_manifest_alone(tmp_path):
+    class OffSeason(DemoSources):
+        def season_state(self):
+            return {"season": 2026, "phase": "off", "week": None}
+
+        def players(self):
+            raise AssertionError("nothing else should be collected")
+
+    out = tmp_path / "data"
+    write_bundle(DemoSources(), out, demo=True)
+    manifest = write_bundle(OffSeason(), out)
+    assert (manifest["week"], manifest["phase"]) == (None, "off")
+    assert [p.name for p in out.iterdir()] == ["manifest.json"]
