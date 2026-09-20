@@ -28,8 +28,8 @@ The application should be usable with deterministic fixtures and no network. Pro
 
 ## Rights and publication
 
-The repository's MIT license covers project code and original assets only. Undocumented Sleeper RotoWire projections and ESPN imagery are not licensed by that grant. They may be used in local experiments while publication rules are unresolved, but must not be treated as distributable project data or static assets.
+The repository's MIT license covers project code and original assets only. Provider data and imagery stay with their owners: responses are cached outside the repository, results carry attribution and fetch time, and images are linked from the owner's CDN rather than copied. See `THIRD_PARTY.md`.
 
 ## Tooling
 
-Development uses uv, pytest, and Ruff (`E9` and `F`); browser code uses TypeScript for type checking and Node's built-in test runner. The `uv run ff-watchlist` entry point defaults to `127.0.0.1:8793`; `--demo` is synthetic and fully offline. Install opt-in hooks through `scripts/install_hooks.py`: pre-commit checks tracked-file hygiene, Ruff, and offline pytest, while commit-msg rejects AI co-author trailers and permits human co-authors. `scripts/check.py` is the local aggregate check. No CI is required for this slice. Private planning notes belong in ignored `PROJECT-PLAN.md` and `.local/`, not in the public architecture document.
+Development uses uv, pytest, and Ruff (`E9` and `F`); browser code uses TypeScript for type checking and Node's built-in test runner. The `uv run ff-watchlist` entry point defaults to `127.0.0.1:8793`; `--demo` is synthetic and fully offline. Install opt-in hooks through `scripts/install_hooks.py`: pre-commit checks tracked-file hygiene, Ruff, and offline pytest, while commit-msg rejects AI co-author trailers and permits human co-authors. `scripts/check.py` is the local aggregate check.

@@ -9,4 +9,4 @@ screenshot or describe keyboard and narrow-screen checks.
 
 - [ ] `uv run python scripts/check.py` passes.
 - [ ] Notable changes appear under Unreleased in CHANGELOG.md.
-- [ ] No credentials, provider dumps or private planning files are included.
+- [ ] No credentials, provider responses or personal notes are included.

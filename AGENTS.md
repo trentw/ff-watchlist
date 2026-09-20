@@ -9,7 +9,6 @@ FF Watchlist is a small FastAPI service for assembling a fantasy-football watchl
 - `web/` contains the TypeScript browser ranker and its tests. It has no runtime dependencies.
 - `tests/` contains offline tests; `tests/parity/` holds ranking cases shared with `web/`.
 - `docs/` contains project architecture and contributor-facing notes.
-- `PROJECT-PLAN.md` and `.local/` are private internal notes and should remain untracked.
 
 ## Development
 
@@ -27,7 +26,7 @@ Tests must be offline. The `uv run ff-watchlist` command defaults to `127.0.0.1:
 
 ## Source and media rights
 
-Source provenance must be explicit. Undocumented Sleeper RotoWire projections and ESPN imagery are not licensed by the MIT project license; treat them as local experimental inputs only until publication rules are resolved. Do not ship them as public project assets.
+Source provenance must be explicit; `THIRD_PARTY.md` lists every source and how it is used. Provider data and imagery are not covered by the MIT license. Never commit provider responses or images, show attribution and fetch time with provider numbers, and keep images optional so a source can be switched off.
 
 ## Change hygiene
 
@@ -53,5 +52,4 @@ Add or update tests for behavior that matters, keep public API changes documente
   retain only applicable Added/Changed/Deprecated/Removed/Fixed/Security groups.
 - Keep commits and PR descriptions brief: state the change, why when needed,
   and relevant verification. Never add AI coauthor attribution.
-- Public docs must stand on their own. Do not link contributor instructions to
-  ignored private plans or require personal journals/handoff ceremonies.
+- Public docs must stand on their own; never reference untracked notes.

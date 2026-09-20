@@ -27,8 +27,8 @@ uv run ff-watchlist
 Choose the actual season and week yourself: the initial form is deliberately
 set to the reproducible 2026 week 2 example, not an automatic current-week guess.
 This mode fetches Sleeper player/projection data and ESPN schedules and optional
-imagery. Provider caches are dated under ignored `data/`. Public access does not
-establish redistribution rights; see [source notes](THIRD_PARTY.md) before hosting.
+imagery. Provider caches are dated under ignored `data/`. See the
+[source notes](THIRD_PARTY.md) for what each provider is used for.
 `--host` and `--port` configure the listener; the default binds only to localhost.
 
 ## Current capabilities
@@ -53,8 +53,7 @@ uv run python scripts/check.py
 
 See [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md),
 [architecture](docs/architecture.md) and [CHANGELOG.md](CHANGELOG.md).
-Hooks are opt-in and are not a replacement for review. Internal planning lives
-in ignored `PROJECT-PLAN.md` and `.local/`; contributors need neither.
+Hooks are opt-in and are not a replacement for review.
 
 ## License
 

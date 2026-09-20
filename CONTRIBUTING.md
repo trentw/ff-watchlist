@@ -33,7 +33,7 @@ Tests must not require network access, credentials, or a live fantasy provider. 
 
 ## Data and media
 
-Record source provenance when adding an adapter or fixture. Undocumented Sleeper RotoWire projections and ESPN imagery are local experimental inputs only; they are never covered by this repository's MIT license. Any permission to publish them must come separately from their rights holders. Do not publish them in a release or public static bundle.
+Record source provenance when adding an adapter or fixture, and list new sources in [THIRD_PARTY.md](THIRD_PARTY.md). Provider data and imagery are not covered by the MIT license: keep provider responses out of the repository, use synthetic fixtures, and keep images optional so any source can be switched off.
 
 ## Commits and reviews
 
