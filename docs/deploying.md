@@ -13,6 +13,10 @@ The site is a directory of static files, so any static host works. This reposito
 2. Add repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
 3. In `wrangler.jsonc`, set `name` and replace the `routes` pattern with a hostname in a Cloudflare zone you control, or remove `routes` to use only the `workers.dev` address.
 
+## Analytics
+
+If your Cloudflare zone has Web Analytics enabled, Cloudflare injects its beacon script into pages. `web/_headers` allows that script and its reporting endpoint; remove `static.cloudflareinsights.com` and `cloudflareinsights.com` from the policy if you do not use it.
+
 ## Switching images off
 
 Set the repository variable `SHOW_HEADSHOTS` or `SHOW_LOGOS` to `false` and run the Publish workflow. The next bundle tells the app not to request those images; no code change or rebuild of the app is involved. Cards fall back to jersey numbers, positions and team colors.

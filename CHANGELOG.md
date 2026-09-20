@@ -23,6 +23,11 @@ The format follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/
   Python reference implementations.
 - Contributor guidance and opt-in code-quality and commit-message hooks.
 
+### Changed
+
+- The content security policy allows Cloudflare's cookie-free Web Analytics
+  beacon, and the page footer says visits are counted.
+
 ### Removed
 
 - The FastAPI server and its page; lineups are no longer sent to a server.

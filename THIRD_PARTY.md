@@ -12,6 +12,10 @@ The MIT license covers this project's code and original assets only. Data, photo
 | ESPN scoreboard (`site.api.espn.com`) | Schedule, kickoff times, networks | Undocumented public endpoint. |
 | Sleeper image CDN (`sleepercdn.com`) | Optional team logos and headshots | Linked from the owner's CDN at display time; never copied into this repository or a deployment. |
 
+## Analytics
+
+The hosted site uses Cloudflare Web Analytics, which Cloudflare adds at the edge. It counts page views and load timings without cookies and never sees a lineup. It is not part of this repository's code; the content security policy in `web/_headers` is what permits it.
+
 ## Rules for contributors
 
 - Keep provider responses out of the repository. Tests and fixtures use synthetic data.
