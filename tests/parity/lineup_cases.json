@@ -1,0 +1,481 @@
+{
+ "directory": {
+  "1": {
+   "name": "Caleb Williams",
+   "team": "CHI",
+   "position": "QB",
+   "number": "18",
+   "active": true
+  },
+  "2": {
+   "name": "Jahmyr Gibbs",
+   "team": "DET",
+   "position": "RB",
+   "number": "0",
+   "active": true
+  },
+  "3": {
+   "name": "D.J. Moore",
+   "team": "CHI",
+   "position": "WR",
+   "active": true
+  },
+  "4": {
+   "name": "D.J. Moore",
+   "team": "CAR",
+   "position": "WR",
+   "active": false
+  },
+  "5": {
+   "name": "Justin Jefferson",
+   "team": "MIN",
+   "position": "WR",
+   "number": "18",
+   "active": true
+  },
+  "6": {
+   "name": "Jordan Williams",
+   "team": "CHI",
+   "position": "WR",
+   "active": true
+  },
+  "7": {
+   "name": "Jordan Williams",
+   "team": "DET",
+   "position": "WR",
+   "active": true
+  },
+  "8": {
+   "name": "Ja'Marr Chase",
+   "team": "CIN",
+   "position": "WR",
+   "number": "1",
+   "active": true
+  },
+  "9": {
+   "name": "Amon-Ra St. Brown",
+   "team": "DET",
+   "position": "WR",
+   "number": "14",
+   "active": true
+  },
+  "10": {
+   "name": "Marvin Harrison Jr.",
+   "team": "ARI",
+   "position": "WR",
+   "active": true
+  },
+  "11": {
+   "name": "Sam Twin",
+   "team": "LAC",
+   "position": "RB",
+   "active": true
+  },
+  "12": {
+   "name": "Sam Twin",
+   "team": "LAC",
+   "position": "TE",
+   "active": true
+  },
+  "13": {
+   "name": "Free Agent",
+   "team": "",
+   "position": "K",
+   "active": true
+  },
+  "CHI": {
+   "name": "Chicago Bears",
+   "team": "CHI",
+   "position": "DST",
+   "active": true
+  },
+  "LAR": {
+   "name": "Los Angeles Rams",
+   "team": "LAR",
+   "position": "DST",
+   "active": true
+  }
+ },
+ "cases": [
+  {
+   "name": "csv, copied roster rows, tabs and a bench marker",
+   "text": "name,team,slot\nCaleb Williams, CHI, QB\nQB  Caleb Williams  Chi - QB\nWR\tD.J. Moore\tCHI\nBN Justin Jefferson MIN - WR",
+   "expected": {
+    "players": [
+     {
+      "id": "1",
+      "name": "Caleb Williams",
+      "team": "CHI",
+      "pos": "QB",
+      "slot": "QB",
+      "jersey": "18"
+     },
+     {
+      "id": "3",
+      "name": "D.J. Moore",
+      "team": "CHI",
+      "pos": "WR",
+      "slot": "WR"
+     },
+     {
+      "id": "5",
+      "name": "Justin Jefferson",
+      "team": "MIN",
+      "pos": "WR",
+      "slot": "BN",
+      "jersey": "18"
+     }
+    ],
+    "issues": [
+     {
+      "line": 3,
+      "text": "QB Caleb Williams Chi - QB",
+      "message": "duplicate player 'Caleb Williams'; row ignored"
+     }
+    ],
+    "warnings": []
+   }
+  },
+  {
+   "name": "bare names are starters and markup is read as text",
+   "text": "<tr><td>WR</td><td>D.J. Moore</td><td>CHI</td></tr>\nCaleb Williams\n<script>alert(1)</script>Jahmyr Gibbs<!-- hidden -->\n&lt;b&gt;Nobody&lt;/b&gt;",
+   "expected": {
+    "players": [
+     {
+      "id": "3",
+      "name": "D.J. Moore",
+      "team": "CHI",
+      "pos": "WR",
+      "slot": "WR"
+     },
+     {
+      "id": "1",
+      "name": "Caleb Williams",
+      "team": "CHI",
+      "pos": "QB",
+      "slot": "STARTER",
+      "jersey": "18"
+     },
+     {
+      "id": "2",
+      "name": "Jahmyr Gibbs",
+      "team": "DET",
+      "pos": "RB",
+      "slot": "STARTER",
+      "jersey": "0"
+     }
+    ],
+    "issues": [
+     {
+      "line": 4,
+      "text": "<b>Nobody</b>",
+      "message": "unmatched player name '<b>Nobody</b>'; use the exact name or add a team"
+     }
+    ],
+    "warnings": []
+   }
+  },
+  {
+   "name": "ambiguous names and stale teams are reported, not guessed",
+   "text": "Jordan Williams\nD.J. Moore, CAR, WR\nJordan Williams, DET",
+   "expected": {
+    "players": [
+     {
+      "id": "7",
+      "name": "Jordan Williams",
+      "team": "DET",
+      "pos": "WR",
+      "slot": "STARTER"
+     }
+    ],
+    "issues": [
+     {
+      "line": 1,
+      "text": "Jordan Williams",
+      "message": "ambiguous player name 'Jordan Williams' (CHI, DET); add the current team"
+     },
+     {
+      "line": 2,
+      "text": "D.J. Moore, CAR, WR",
+      "message": "team CAR conflicts with the player's active/current team"
+     }
+    ],
+    "warnings": []
+   }
+  },
+  {
+   "name": "position narrows a shared name",
+   "text": "RB Sam Twin\nSam Twin LAC - TE\nSam Twin",
+   "expected": {
+    "players": [
+     {
+      "id": "11",
+      "name": "Sam Twin",
+      "team": "LAC",
+      "pos": "RB",
+      "slot": "RB"
+     },
+     {
+      "id": "12",
+      "name": "Sam Twin",
+      "team": "LAC",
+      "pos": "TE",
+      "slot": "TE"
+     }
+    ],
+    "issues": [
+     {
+      "line": 3,
+      "text": "Sam Twin",
+      "message": "ambiguous player name 'Sam Twin' (LAC); add the current team"
+     }
+    ],
+    "warnings": []
+   }
+  },
+  {
+   "name": "defenses resolve by team",
+   "text": "DST Chicago Bears D/ST\nDEF  Rams  LA - DEF\nSeattle Seahawks D/ST",
+   "expected": {
+    "players": [
+     {
+      "id": "CHI",
+      "name": "Chicago Bears",
+      "team": "CHI",
+      "pos": "DST",
+      "slot": "DST"
+     },
+     {
+      "id": "LAR",
+      "name": "Los Angeles Rams",
+      "team": "LAR",
+      "pos": "DST",
+      "slot": "DST"
+     }
+    ],
+    "issues": [
+     {
+      "line": 3,
+      "text": "Seattle Seahawks D/ST",
+      "message": "unmatched player name 'Seattle Seahawks'; use the exact name or add a team"
+     }
+    ],
+    "warnings": []
+   }
+  },
+  {
+   "name": "one field per line, as phones copy it",
+   "text": "QB\nCaleb Williams\nCHI - QB\nBN\nJustin Jefferson\nMIN - WR\nWR",
+   "expected": {
+    "players": [
+     {
+      "id": "1",
+      "name": "Caleb Williams",
+      "team": "CHI",
+      "pos": "QB",
+      "slot": "QB",
+      "jersey": "18"
+     },
+     {
+      "id": "5",
+      "name": "Justin Jefferson",
+      "team": "MIN",
+      "pos": "WR",
+      "slot": "BN",
+      "jersey": "18"
+     }
+    ],
+    "issues": [
+     {
+      "line": 7,
+      "text": "WR",
+      "message": "unmatched player name 'WR'; use the exact name or add a team"
+     }
+    ],
+    "warnings": []
+   }
+  },
+  {
+   "name": "bad teams and slots are errors",
+   "text": "Caleb Williams, ZZZ, QB\nCaleb Williams, CHI, BNN\nBNN, Caleb Williams, CHI",
+   "expected": {
+    "players": [],
+    "issues": [
+     {
+      "line": 1,
+      "text": "Caleb Williams, ZZZ, QB",
+      "message": "unknown team 'ZZZ'; use an NFL abbreviation or team name"
+     },
+     {
+      "line": 2,
+      "text": "Caleb Williams, CHI, BNN",
+      "message": "unknown lineup slot 'BNN'"
+     },
+     {
+      "line": 3,
+      "text": "BNN, Caleb Williams, CHI",
+      "message": "unknown lineup slot 'BNN'"
+     }
+    ],
+    "warnings": []
+   }
+  },
+  {
+   "name": "reserve slots become bench",
+   "text": "Justin Jefferson, MIN, RESERVE\nIR Jahmyr Gibbs\nD.J. Moore, CHI, WR, BN",
+   "expected": {
+    "players": [
+     {
+      "id": "5",
+      "name": "Justin Jefferson",
+      "team": "MIN",
+      "pos": "WR",
+      "slot": "BN",
+      "jersey": "18"
+     },
+     {
+      "id": "2",
+      "name": "Jahmyr Gibbs",
+      "team": "DET",
+      "pos": "RB",
+      "slot": "IR",
+      "jersey": "0"
+     },
+     {
+      "id": "3",
+      "name": "D.J. Moore",
+      "team": "CHI",
+      "pos": "WR",
+      "slot": "BN"
+     }
+    ],
+    "issues": [],
+    "warnings": []
+   }
+  },
+  {
+   "name": "pipes, dashes, parentheses and full team names",
+   "text": "Ja’Marr Chase | WR | CIN\nAmon-Ra St. Brown — DET — WR\nMarvin Harrison Jr (ARI) WR\nFLEX Jahmyr Gibbs Detroit Lions\nW/R/T Caleb Williams",
+   "expected": {
+    "players": [
+     {
+      "id": "8",
+      "name": "Ja'Marr Chase",
+      "team": "CIN",
+      "pos": "WR",
+      "slot": "WR",
+      "jersey": "1"
+     },
+     {
+      "id": "9",
+      "name": "Amon-Ra St. Brown",
+      "team": "DET",
+      "pos": "WR",
+      "slot": "WR",
+      "jersey": "14"
+     },
+     {
+      "id": "10",
+      "name": "Marvin Harrison Jr.",
+      "team": "ARI",
+      "pos": "WR",
+      "slot": "WR"
+     },
+     {
+      "id": "2",
+      "name": "Jahmyr Gibbs",
+      "team": "DET",
+      "pos": "RB",
+      "slot": "FLEX",
+      "jersey": "0"
+     },
+     {
+      "id": "1",
+      "name": "Caleb Williams",
+      "team": "CHI",
+      "pos": "QB",
+      "slot": "W/R/T",
+      "jersey": "18"
+     }
+    ],
+    "issues": [],
+    "warnings": []
+   }
+  },
+  {
+   "name": "headers, blanks, duplicates and unknowns",
+   "text": "Starting Lineup\n\nPlayer, Team, Slot\nCaleb Williams, CHI, QB\ncaleb williams\nNobody Real, CHI, WR\nFree Agent\nK Free Agent",
+   "expected": {
+    "players": [
+     {
+      "id": "1",
+      "name": "Caleb Williams",
+      "team": "CHI",
+      "pos": "QB",
+      "slot": "QB",
+      "jersey": "18"
+     },
+     {
+      "id": "13",
+      "name": "Free Agent",
+      "team": "",
+      "pos": "K",
+      "slot": "STARTER"
+     }
+    ],
+    "issues": [
+     {
+      "line": 5,
+      "text": "caleb williams",
+      "message": "duplicate player 'Caleb Williams'; row ignored"
+     },
+     {
+      "line": 6,
+      "text": "Nobody Real, CHI, WR",
+      "message": "team CHI conflicts with the directory entry"
+     },
+     {
+      "line": 8,
+      "text": "K Free Agent",
+      "message": "duplicate player 'Free Agent'; row ignored"
+     }
+    ],
+    "warnings": []
+   }
+  },
+  {
+   "name": "slot first csv",
+   "text": "QB, Caleb Williams, CHI\nBN, Justin Jefferson, MIN\nWR, Ja'Marr Chase, CIN, extra",
+   "expected": {
+    "players": [
+     {
+      "id": "1",
+      "name": "Caleb Williams",
+      "team": "CHI",
+      "pos": "QB",
+      "slot": "QB",
+      "jersey": "18"
+     },
+     {
+      "id": "5",
+      "name": "Justin Jefferson",
+      "team": "MIN",
+      "pos": "WR",
+      "slot": "BN",
+      "jersey": "18"
+     },
+     {
+      "id": "8",
+      "name": "Ja'Marr Chase",
+      "team": "CIN",
+      "pos": "WR",
+      "slot": "WR",
+      "jersey": "1"
+     }
+    ],
+    "issues": [],
+    "warnings": []
+   }
+  }
+ ]
+}
