@@ -38,8 +38,9 @@ load those images.
 
 ## What it does
 
-- Search players by name, or paste names, roster text or CSV; ambiguous and
-  unknown names are reported instead of guessed.
+- Import your lineup from Sleeper by username, search players by name, or
+  paste names, roster text or CSV; ambiguous and unknown names are reported
+  instead of guessed.
 - Standard, half-PPR and PPR scoring.
 - Starters, bench, byes and missing projections stay distinguishable; a
   missing projection is never counted as zero.
@@ -47,8 +48,7 @@ load those images.
 - The lineup is saved in your browser and can be shared as a link.
 - Team logos and headshots are optional and fail independently of rankings.
 
-Not yet: importing a lineup from a fantasy platform, custom league scoring,
-multiple leagues.
+Not yet: imports from Yahoo or ESPN, custom league scoring, multiple leagues.
 
 ## Contribute
 

@@ -13,6 +13,8 @@ The format follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/
   timezone, visible data age and optional team logos and headshots.
 - `ff-watchlist export` writes a validated weekly data bundle; `ff-watchlist
   serve` previews the built site. `--demo` data is synthetic and offline.
+- Import a lineup from Sleeper by username. The requests go from the browser
+  to Sleeper's public API; the week's matchup decides who starts.
 - When a new week begins, a saved lineup asks once to be reviewed and flags
   players who changed teams or are not playing.
 - Outside the regular season the export publishes a manifest alone and the

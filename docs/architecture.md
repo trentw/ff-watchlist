@@ -23,6 +23,7 @@ TypeScript with no runtime dependencies, bundled by esbuild.
 - `core.ts` joins projections and ranks games. Kickoff windows are keyed by UTC hour, so the same games compete in every timezone; only labels use the viewer's timezone.
 - `lineup.ts` parses pasted rosters against the directory.
 - `search.ts`, `roster.ts` provide player search, the saved lineup and share links.
+- `sleeper.ts` imports a lineup from Sleeper's public API, called directly from the browser; it is the only request the page makes to a host other than its own.
 - `data.ts` loads the bundle; `app.ts` wires the page. Pasted and provider text is only ever written as text nodes.
 
 ## Two implementations, one behavior

@@ -156,3 +156,12 @@ h1{font-size:2.6rem}
 .portrait .number{font-size:.95rem}
 .headshot.logo{object-fit:contain;padding:5px}
 .workspace:has(#controls[hidden]){grid-template-columns:1fr}
+.inline-form{display:flex;gap:8px;align-items:stretch;margin-bottom:10px}
+.inline-form input{margin:0;flex:1;min-width:0}
+.league-list{list-style:none;margin:0;padding:0}
+.league-list button{width:100%;text-align:left;margin-bottom:6px;display:flex;justify-content:space-between;gap:8px}
+.league-list .meta{font-weight:normal;color:#69725e}
+.import-status{margin:8px 0}
+.import-status:empty{display:none}
+.wide{width:100%;margin-bottom:6px}
+.paste+.import-status+.wide+.paste{margin-top:14px}
