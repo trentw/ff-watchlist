@@ -58,7 +58,8 @@ uv run python scripts/check.py
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md), [AGENTS.md](AGENTS.md),
-[architecture](docs/architecture.md) and [CHANGELOG.md](CHANGELOG.md).
+[architecture](docs/architecture.md), [deploying](docs/deploying.md) and
+[CHANGELOG.md](CHANGELOG.md).
 Hooks are opt-in and are not a replacement for review.
 
 ## License

@@ -18,6 +18,7 @@ __pycache__/
 htmlcov/
 dist/
 node_modules/
+.wrangler/
 build/
 *.egg-info/
 .DS_Store

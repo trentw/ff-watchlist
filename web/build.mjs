@@ -14,6 +14,6 @@ await build({
   minify: true,
   sourcemap: true,
 });
-for (const file of ["index.html", "styles.css", "favicon.svg"]) {
+for (const file of ["index.html", "styles.css", "favicon.svg", "_headers"]) {
   await copyFile(new URL(`./${file}`, import.meta.url), new URL(file, out));
 }
