@@ -9,7 +9,7 @@ The MIT license covers this project's code and original assets only. Data, photo
 | Sleeper API (`api.sleeper.app`) | Player directory, current week | Documented, read-only, free for non-commercial use per Sleeper's API docs. |
 | Sleeper weekly projections | Projected points | Undocumented endpoint; rows are attributed to RotoWire. Always shown with attribution and fetch time. |
 | ESPN scoreboard (`site.api.espn.com`) | Schedule, kickoff times, networks | Undocumented public endpoint. |
-| ESPN and Sleeper image CDNs | Optional team logos and headshots | Linked from the owner's CDN at display time; never copied into this repository or a deployment. |
+| Sleeper image CDN (`sleepercdn.com`) | Optional team logos and headshots | Linked from the owner's CDN at display time; never copied into this repository or a deployment. |
 
 ## Rules for contributors
 

@@ -38,8 +38,3 @@ class DemoSources:
     def _validate(season, week):
         if (season, week) != (2026, 2):
             raise SourceUnavailable("Offline fixtures cover 2026 week 2 only")
-
-
-class DemoMedia:
-    def lookup(self, players):
-        return {"teams": {}, "players": {}, "warnings": []}

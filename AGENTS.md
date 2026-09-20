@@ -1,12 +1,11 @@
 # FF Watchlist contributor guide
 
-FF Watchlist is a small FastAPI service for assembling a fantasy-football watchlist. Keep changes narrow, readable, and easy to run offline.
+FF Watchlist is a static site with a small Python collector: it ranks NFL games by a visitor's fantasy lineup, entirely in the browser. Keep changes narrow, readable, and easy to run offline.
 
 ## Layout
 
-- `src/ff_watchlist/` contains the application package and its `watch_core`, `watch_lineup`, `watch_sources`, `watch_media`, and `watch_public` modules.
-- `src/ff_watchlist/watch_public_static/` contains the current HTML, CSS, and JavaScript surface.
-- `web/` contains the TypeScript browser ranker and its tests. It has no runtime dependencies.
+- `src/ff_watchlist/` is the collector: `watch_sources` (provider adapters), `export` (data bundle), `watch_core` and `watch_lineup` (reference ranking and parsing), `demo` and `cli`.
+- `web/` is the browser app: TypeScript with no runtime dependencies, plus `index.html` and `styles.css`.
 - `tests/` contains offline tests; `tests/parity/` holds ranking cases shared with `web/`.
 - `docs/` contains project architecture and contributor-facing notes.
 
@@ -22,7 +21,7 @@ uv run ruff check --select E9,F .
 
 Browser code needs Node 22.18+: run `npm ci`, then `npm run check` (type check and tests; `scripts/check.py` includes it once installed). After changing ranking behavior, regenerate the shared cases with `uv run python scripts/make_parity_fixtures.py` and keep both suites passing.
 
-Tests must be offline. The `uv run ff-watchlist` command defaults to `127.0.0.1:8793`; `--demo` uses synthetic, fully offline data. The frozen 2026 week 2 example is retained as a clearly labeled demo; users select the actual season and week for real use. Do not add dependencies unless the change clearly requires one and the dependency is documented. Install opt-in hooks through `uv run python scripts/install_hooks.py`: pre-commit checks tracked-file hygiene, Ruff, and offline pytest; commit-msg rejects AI co-author trailers while allowing human co-authors.
+Tests must be offline. `npm run build`, `uv run ff-watchlist export --demo` and `uv run ff-watchlist serve` give a fully offline site at `127.0.0.1:8793`; the demo data is synthetic and labeled as such. Do not add dependencies unless the change clearly requires one and the dependency is documented. Install opt-in hooks through `uv run python scripts/install_hooks.py`: pre-commit checks tracked-file hygiene, Ruff, and offline pytest; commit-msg rejects AI co-author trailers while allowing human co-authors.
 
 ## Source and media rights
 
@@ -41,9 +40,10 @@ Add or update tests for behavior that matters, keep public API changes documente
   cases keep them identical.
   Missing points are not zero, bench points only break starter ties, and name
   ambiguity must remain explicit. Preserve timezone-aware kickoff grouping.
-- Keep provider I/O outside the core. Date caches, preserve real source times,
+- Keep provider I/O in `watch_sources`; the browser only reads the bundle. Date caches, preserve real source times,
   and test failures with synthetic fixtures. Never silently substitute scoring.
-- Treat pasted input as untrusted; render names as text. Never log roster
+- Treat pasted and provider text as untrusted; render it as text nodes only.
+  A lineup must never leave the browser. Never log roster
   bodies or commit credentials, provider caches, personal plans or local paths.
 - Verify UI changes with keyboard use and a narrow viewport. Media failure
   must not stop rankings. Avoid unrelated refactors or mandatory new tooling.

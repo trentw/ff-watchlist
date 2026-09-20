@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
 license-files = ["LICENSE", "THIRD_PARTY.md"]
-dependencies = ["fastapi>=0.141.1", "httpx>=0.28.1", "uvicorn>=0.52.4"]
+dependencies = ["httpx>=0.28.1"]
 
 [project.scripts]
 ff-watchlist = "ff_watchlist.cli:main"
