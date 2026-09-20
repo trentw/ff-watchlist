@@ -4,7 +4,9 @@ import { age, fetchBundle, fetchManifest } from "./data.ts";
 import type { Bundle, OffSeasonManifest } from "./data.ts";
 import { parseLineup } from "./lineup.ts";
 import type { LineupIssue, LineupPlayer } from "./lineup.ts";
-import { decodeShare, emptyRoster, encodeShare, loadRoster, resolveRoster, saveRoster } from "./roster.ts";
+import {
+  confirmRoster, decodeShare, emptyRoster, encodeShare, loadRoster, needsReview, resolveRoster, saveRoster, teamChanges, weekKey,
+} from "./roster.ts";
 import type { Roster } from "./roster.ts";
 import { buildIndex, searchPlayers } from "./search.ts";
 import type { SearchIndexEntry } from "./search.ts";
@@ -57,8 +59,9 @@ function points(value: number | null | undefined): string {
 
 // ---------------------------------------------------------------- lineup editor
 
+/** Every saved edit also confirms the lineup for the week on screen. */
 function commit(next: Roster, keep = true): void {
-  roster = next;
+  roster = keep && bundle ? confirmRoster(next, bundle.directory, weekKey(bundle.manifest.season, bundle.manifest.week)) : next;
   if (keep) {
     viewingShared = false;
     saveRoster(storage, roster);
@@ -279,26 +282,42 @@ function renderStatus(data: Bundle): void {
   status.append(chip);
 }
 
-function renderNotices(ranking: Ranking, missing: number): void {
-  const notices = pasteIssues.map((i) => `Line ${i.line}: “${i.text}” — ${i.message}`);
-  if (ranking.unmatched.length) notices.push(`No projection for ${ranking.unmatched.map((p) => p.name).join(", ")}. Totals include known points only.`);
-  if (missing) notices.push(`${missing} saved player${missing === 1 ? " is" : "s are"} no longer in the player list and ${missing === 1 ? "was" : "were"} left out.`);
+function noticeBox(title: string, lines: string[], action?: HTMLButtonElement): HTMLElement {
+  const notice = el("div", undefined, "notice");
+  notice.append(el("strong", title));
+  if (lines.length) {
+    const list = el("ul");
+    for (const text of lines) list.append(el("li", text));
+    notice.append(list);
+  }
+  if (action) notice.append(action);
+  return notice;
+}
+
+function actionButton(label: string, onClick: () => void): HTMLButtonElement {
+  const button = el("button", label, "secondary");
+  button.type = "button";
+  button.addEventListener("click", onClick);
+  return button;
+}
+
+function renderNotices(ranking: Ranking, missing: number, data: Bundle): void {
   const box = $("issues");
   box.replaceChildren();
   if (viewingShared) {
-    const shared = el("div", undefined, "notice");
-    const keep = el("button", "Keep this lineup", "secondary");
-    keep.type = "button";
-    keep.addEventListener("click", () => commit(roster));
-    shared.append(el("strong", "You’re viewing a shared lineup. "), el("span", "It isn’t saved on this device. "), keep);
-    box.append(shared);
+    box.append(noticeBox("You’re viewing a shared lineup.", ["It isn’t saved on this device."],
+      actionButton("Keep this lineup", () => commit(roster))));
+  } else if (needsReview(roster, weekKey(data.manifest.season, data.manifest.week))) {
+    const flags = teamChanges(roster, data.directory).map((c) => `${c.name} moved from ${c.from} to ${c.to}.`);
+    if (ranking.idle.length) flags.push(`Not playing this week: ${ranking.idle.map((p) => p.name).join(", ")}.`);
+    box.append(noticeBox(`It’s Week ${data.manifest.week}. Is this still your lineup?`, flags,
+      actionButton("Looks right", () => commit(roster))));
   }
-  if (!notices.length) return;
-  const notice = el("div", undefined, "notice");
-  const list = el("ul");
-  for (const text of notices) list.append(el("li", text));
-  notice.append(el("strong", "Check your lineup"), list);
-  box.append(notice);
+
+  const notices = pasteIssues.map((i) => `Line ${i.line}: “${i.text}” — ${i.message}`);
+  if (ranking.unmatched.length) notices.push(`No projection for ${ranking.unmatched.map((p) => p.name).join(", ")}. Totals include known points only.`);
+  if (missing) notices.push(`${missing} saved player${missing === 1 ? " is" : "s are"} no longer in the player list and ${missing === 1 ? "was" : "were"} left out.`);
+  if (notices.length) box.append(noticeBox("Check your lineup", notices));
 }
 
 /** Nothing to rank: say so, and leave the saved lineup untouched for next season. */
@@ -331,7 +350,7 @@ function render(): void {
   renderStatus(bundle);
   attachProjections(players, bundle.projections, roster.scoring);
   const ranking = rank(players, bundle.schedule);
-  renderNotices(ranking, missing.length);
+  renderNotices(ranking, missing.length, bundle);
   const hasPlayers = players.length > 0;
   $("placeholder").hidden = hasPlayers;
   $("share").hidden = !hasPlayers;

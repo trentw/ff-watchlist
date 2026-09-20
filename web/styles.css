@@ -148,7 +148,8 @@ h1{font-size:2.6rem}
 .chip.stale{border-color:#e6b651;color:#ffd98a}
 .share-status{margin:0 0 8px;font-size:.8rem;color:#d6dec9;min-height:0}
 .share-status:empty{display:none}
-.notice button{margin-left:6px;color:#55401a;border-color:#a98a45}
+.notice button{margin-top:8px;color:#55401a;border-color:#a98a45}
+.notice ul+button{margin-top:2px}
 .other-games{color:#c5cfb4;font-size:.8rem;margin:10px 2px 0}
 .game.over{opacity:.62}
 .matchup-title{margin:0;font-size:inherit}
