@@ -30,15 +30,15 @@ def test_media_switches_are_recorded(tmp_path, monkeypatch):
 
 def test_slim_directory_keeps_identity_for_fantasy_positions_only():
     slim = slim_directory({
-        "1": {"full_name": "Pat Passer", "team": "JAC", "position": "QB", "number": 9, "active": True, "age": 27},
+        "1": {"full_name": "Pat Passer", "team": "JAC", "position": "QB", "number": 9, "active": True, "age": 27, "yahoo_id": 123},
         "2": {"first_name": "Lee", "last_name": "Backer", "team": "CHI", "position": "LB"},
-        "CHI": {"first_name": "Chicago", "last_name": "Bears", "team": "CHI", "position": "DEF"},
+        "CHI": {"first_name": "Chicago", "last_name": "Bears", "team": "CHI", "position": "DEF", "yahoo_id": "00100"},
         "3": {"team": "DET", "position": "WR"},
         "4": "not a row",
     })
     assert slim == {
-        "1": {"name": "Pat Passer", "team": "JAX", "position": "QB", "number": "9", "active": True},
-        "CHI": {"name": "Chicago Bears", "team": "CHI", "position": "DST"},
+        "1": {"name": "Pat Passer", "team": "JAX", "position": "QB", "number": "9", "active": True, "yahoo_id": "123"},
+        "CHI": {"name": "Chicago Bears", "team": "CHI", "position": "DST", "yahoo_id": "100"},
     }
 
 

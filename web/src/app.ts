@@ -13,6 +13,8 @@ import { SleeperError, findAccount, importLineup, loadSource, saveSource } from 
 import type { SleeperLeague, SleeperSource } from "./sleeper.ts";
 import type { SearchIndexEntry } from "./search.ts";
 import { TEAM_COLORS, headshotUrl, logoUrl } from "./teams.ts";
+import { connect as connectYahoo, disconnect as disconnectYahoo, fetchRoster as fetchYahooRoster, loadYahooSource, mapRoster, saveYahooSource, session as yahooSession, teams as yahooTeams, YahooImportError } from "./yahoo.ts";
+import type { YahooSource, YahooTeam } from "./yahoo.ts";
 
 const DATA_BASE = "data/";
 const STALE_AFTER_HOURS = 24;
@@ -31,6 +33,8 @@ let roster: Roster = emptyRoster();
 let viewingShared = false;
 let pasteIssues: LineupIssue[] = [];
 let sleeperSource: SleeperSource | null = null;
+let yahooSource: YahooSource | null = null;
+let yahooConnected = false;
 let options: SearchIndexEntry[] = [];
 let activeOption = -1;
 
@@ -200,6 +204,8 @@ async function importFrom(account: { userId: string; username: string }, league:
     leagueId: league.id, leagueName: league.name, importedAt: new Date().toISOString(),
   };
   saveSource(storage, sleeperSource);
+  yahooSource = null;
+  saveYahooSource(storage, null);
   pasteIssues = [];
   const notes = [`Imported ${lineup.entries.length} players from ${league.name}.`];
   notes.push(lineup.scoringIsPreset
@@ -210,6 +216,92 @@ async function importFrom(account: { userId: string; username: string }, league:
   $("sleeper-leagues").replaceChildren();
   $<HTMLDetailsElement>("sleeper").open = false;
   commit({ ...roster, scoring: lineup.scoring, entries: lineup.entries });
+}
+
+// ---------------------------------------------------------------- Yahoo import
+
+function renderYahooSource(): void {
+  const update = $("yahoo-update");
+  update.hidden = !yahooSource || !yahooConnected;
+  if (yahooSource) update.textContent = `Update from Yahoo · ${yahooSource.teamName}`;
+}
+
+function yahooStatus(message: string): void { $("yahoo-status").textContent = message; }
+
+async function yahooStep(step: () => Promise<void>): Promise<void> {
+  const buttons = ["yahoo-connect", "yahoo-find", "yahoo-disconnect", "yahoo-update"].map((id) => $<HTMLButtonElement>(id));
+  buttons.forEach((button) => { button.disabled = true; });
+  try { await step(); }
+  catch (error) { yahooStatus(error instanceof YahooImportError ? error.message : "Yahoo import couldn't finish. Your lineup is unchanged."); }
+  finally { buttons.forEach((button) => { button.disabled = false; }); }
+}
+
+async function yahooConnection(): Promise<void> {
+  const result = await yahooSession().catch(() => ({ enabled: false, connected: false }));
+  yahooConnected = result.connected;
+  $("yahoo").hidden = !result.enabled;
+  $("yahoo-privacy").hidden = !result.enabled;
+  $("yahoo-connect").hidden = !result.enabled || result.connected;
+  $("yahoo-find").hidden = !result.connected;
+  $("yahoo-disconnect").hidden = !result.connected;
+  renderYahooSource();
+  if (!result.enabled) yahooStatus("");
+  else if (result.connected) yahooStatus(yahooSource ? "" : "Yahoo is connected. Choose a team to import.");
+  else yahooStatus("Connect Yahoo to import one of your fantasy teams.");
+}
+
+async function importYahooTeam(team: YahooTeam | YahooSource): Promise<void> {
+  if (!bundle) return;
+  yahooStatus("Reading this week's Yahoo roster…");
+  const teamKey = "key" in team ? team.key : team.teamKey;
+  const result = await fetchYahooRoster(teamKey, bundle.manifest.season, bundle.manifest.week);
+  if (!bundle || result.season !== bundle.manifest.season || result.week !== bundle.manifest.week) throw new YahooImportError("The displayed week changed. Reload before importing.");
+  const mapped = mapRoster(result, bundle.directory);
+  if (!mapped.entries.length) throw new YahooImportError("No Yahoo players matched the Watchlist player list. Your lineup is unchanged.");
+  const scoring = mapped.suggestedScoring ?? roster.scoring;
+  yahooSource = { teamKey: result.team.key, teamName: result.team.name, leagueName: result.team.leagueName, importedAt: result.fetchedAt };
+  saveYahooSource(storage, yahooSource);
+  sleeperSource = null;
+  saveSource(storage, null);
+  $("yahoo-teams").replaceChildren();
+  $<HTMLDetailsElement>("yahoo").open = false;
+  commit({ ...roster, entries: mapped.entries, scoring });
+  yahooStatus(`Imported ${mapped.entries.length} players from ${result.team.leagueName}. ${mapped.issues.length ? `${mapped.issues.length} could not be matched and were left out. ` : ""}${mapped.suggestedScoring ? `Scoring set to ${SCORING_LABEL[scoring]}; other league rules are not applied.` : `Kept ${SCORING_LABEL[scoring]} scoring because this league's reception setting is custom or unknown.`}`);
+}
+
+async function findYahooTeams(): Promise<void> {
+  if (!bundle) return;
+  yahooStatus("Finding your Yahoo teams…");
+  const found = await yahooTeams();
+  const list = $("yahoo-teams");
+  list.replaceChildren();
+  for (const team of found) {
+    const button = el("button", `${team.leagueName} · ${team.name}`, "secondary");
+    button.type = "button";
+    button.addEventListener("click", () => void yahooStep(() => importYahooTeam(team)));
+    list.append(el("li"));
+    list.lastElementChild!.append(button);
+  }
+  yahooStatus(found.length ? `Choose a team to import.${roster.entries.length ? " It replaces the lineup you have now." : ""}` : "No Yahoo NFL teams were found for the displayed season.");
+}
+
+function wireYahoo(): void {
+  $("yahoo").addEventListener("toggle", () => { if ($<HTMLDetailsElement>("yahoo").open) void yahooStep(yahooConnection); });
+  $("yahoo-connect").addEventListener("click", () => void yahooStep(async () => {
+    try { sessionStorage.setItem("ff-watchlist.yahoo-return-hash", location.hash); } catch { /* Optional view restoration. */ }
+    location.assign(await connectYahoo());
+  }));
+  $("yahoo-find").addEventListener("click", () => void yahooStep(findYahooTeams));
+  $("yahoo-update").addEventListener("click", () => void yahooStep(async () => { if (yahooSource) await importYahooTeam(yahooSource); }));
+  $("yahoo-disconnect").addEventListener("click", () => void yahooStep(async () => {
+    await disconnectYahoo();
+    yahooConnected = false;
+    yahooSource = null;
+    saveYahooSource(storage, null);
+    $("yahoo-teams").replaceChildren();
+    await yahooConnection();
+    yahooStatus("Yahoo disconnected. Your current lineup remains in this browser.");
+  }));
 }
 
 /** Run one Sleeper step with the buttons disabled, turning failures into a message. */
@@ -431,6 +523,7 @@ function render(): void {
   const { players, missing } = resolveRoster(roster, bundle.directory);
   renderRoster(players);
   renderSleeperSource();
+  renderYahooSource();
   renderStatus(bundle);
   attachProjections(players, bundle.projections, roster.scoring);
   const ranking = rank(players, bundle.schedule);
@@ -492,9 +585,20 @@ function start(): void {
   $<HTMLDetailsElement>("editor").open = !(roster.entries.length && window.matchMedia("(max-width: 780px)").matches);
 
   sleeperSource = loadSource(storage);
+  yahooSource = loadYahooSource(storage);
   if (sleeperSource) $<HTMLInputElement>("sleeper-username").value = sleeperSource.username;
   wireSearch();
   wireSleeper();
+  wireYahoo();
+  const yahooOutcome = new URL(location.href).searchParams.get("yahoo");
+  if (yahooOutcome) {
+    const clean = new URL(location.href);
+    clean.searchParams.delete("yahoo");
+    try { clean.hash = sessionStorage.getItem("ff-watchlist.yahoo-return-hash") ?? clean.hash; sessionStorage.removeItem("ff-watchlist.yahoo-return-hash"); } catch { /* Storage may be blocked. */ }
+    history.replaceState(null, "", clean.pathname + clean.search + clean.hash);
+    $<HTMLDetailsElement>("yahoo").open = true;
+  }
+  void yahooStep(yahooConnection);
   $("scoring").addEventListener("change", () => commit({ ...roster, scoring: $<HTMLSelectElement>("scoring").value as Scoring }, !viewingShared));
   $("paste-add").addEventListener("click", importPaste);
   $("example").addEventListener("click", () => { if (bundle) commit(exampleRoster(bundle)); });
@@ -502,6 +606,8 @@ function start(): void {
     pasteIssues = [];
     sleeperSource = null;
     saveSource(storage, null);
+    yahooSource = null;
+    saveYahooSource(storage, null);
     $("sleeper-status").textContent = "";
     commit({ ...roster, entries: [] });
   });

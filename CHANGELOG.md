@@ -8,6 +8,8 @@ The format follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/
 
 ### Added
 
+- Experimental Yahoo Fantasy import code behind a disabled feature flag,
+  pending approval for the intended audience and release checks.
 - Static browser app: player search, roster paste, starter and bench toggles,
   a lineup saved in the browser, share links, kickoff times in the viewer's
   timezone, visible data age and optional team logos and headshots.

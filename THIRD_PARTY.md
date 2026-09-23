@@ -11,6 +11,7 @@ The MIT license covers this project's code and original assets only. Data, photo
 | Sleeper weekly projections | Projected points | Undocumented endpoint; rows are attributed to RotoWire. Always shown with attribution and fetch time. |
 | ESPN scoreboard (`site.api.espn.com`) | Schedule, kickoff times, networks | Undocumented public endpoint. |
 | Sleeper image CDN (`sleepercdn.com`) | Optional team logos and headshots | Linked from the owner's CDN at display time; never copied into this repository or a deployment. |
+| Yahoo Fantasy Sports API (`fantasysports.yahooapis.com`) | Experimental, disabled league import | Requires OAuth and approval for the intended audience. The current production feature flag is off. See [integration checklist](docs/yahoo-import.md) before enabling or displaying Yahoo Fantasy information. |
 
 ## Analytics
 

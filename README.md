@@ -5,12 +5,12 @@ bench, choose scoring, and get every game ranked within its kickoff window.
 Starter projected points lead; bench points break ties. The interface takes
 inspiration from vintage tabletop football.
 
-Live at [ffwatchlist.com](https://ffwatchlist.com). No account, and your lineup
-never leaves your browser.
+Live at [ffwatchlist.com](https://ffwatchlist.com). No Watchlist account is
+needed; your saved lineup stays in your browser.
 
 ## How it works
 
-The site is static. A scheduled job collects the shared facts for the current
+The published page is static. A scheduled job collects the shared facts for the current
 week (player directory, schedule, projections) and publishes them as a small
 JSON bundle. The page loads that bundle and does the rest locally: player
 search, lineup matching, ranking and a saved lineup in `localStorage`.
@@ -48,7 +48,9 @@ load those images.
 - The lineup is saved in your browser and can be shared as a link.
 - Team logos and headshots are optional and fail independently of rankings.
 
-Not yet: imports from Yahoo or ESPN, custom league scoring, multiple leagues.
+Not yet available to visitors: Yahoo or ESPN import, custom league scoring,
+multiple leagues. An experimental Yahoo import is behind a disabled feature
+flag; see the [integration checklist](docs/yahoo-import.md).
 
 ## Contribute
 

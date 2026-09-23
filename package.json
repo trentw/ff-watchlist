@@ -8,7 +8,7 @@
   "scripts": {
     "build": "node web/build.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "node --test \"web/test/**/*.test.ts\"",
+    "test": "node --test \"web/test/**/*.test.ts\" \"worker/test/**/*.test.js\"",
     "check": "npm run typecheck && npm test"
   },
   "devDependencies": {

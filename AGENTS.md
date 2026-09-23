@@ -1,6 +1,6 @@
 # FF Watchlist contributor guide
 
-FF Watchlist is a static site with a small Python collector: it ranks NFL games by a visitor's fantasy lineup, entirely in the browser. Keep changes narrow, readable, and easy to run offline.
+FF Watchlist has a static browser app, a small Python collector, and an optional same-origin Worker for Yahoo import. It ranks NFL games by a visitor's fantasy lineup in the browser. Keep changes narrow, readable, and easy to run offline.
 
 ## Layout
 
@@ -40,11 +40,10 @@ Add or update tests for behavior that matters, keep public API changes documente
   cases keep them identical.
   Missing points are not zero, bench points only break starter ties, and name
   ambiguity must remain explicit. Preserve timezone-aware kickoff grouping.
-- Keep provider I/O in `watch_sources`; the browser only reads the bundle. Date caches, preserve real source times,
+- Keep weekly bundle collection I/O in `watch_sources`. Sleeper lineup import calls its public API from the browser; the optional Yahoo Worker handles OAuth and transient roster reads. Date caches, preserve real source times,
   and test failures with synthetic fixtures. Never silently substitute scoring.
 - Treat pasted and provider text as untrusted; render it as text nodes only.
-  A lineup must never leave the browser. Never log roster
-  bodies or commit credentials, provider caches, personal plans or local paths.
+  A saved Watchlist lineup must stay in the browser. The Yahoo Worker may pass a requested Yahoo roster through to that browser, but must not store or log it. Never commit credentials, provider caches, personal plans or local paths.
 - Verify UI changes with keyboard use and a narrow viewport. Media failure
   must not stop rankings. Avoid unrelated refactors or mandatory new tooling.
 - Before committing, run the local checks and inspect the staged diff. Update

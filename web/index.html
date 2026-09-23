@@ -61,6 +61,17 @@
       <p id="sleeper-status" class="hint import-status" role="status"></p>
       <button id="sleeper-update" type="button" class="secondary wide" hidden></button>
 
+      <details class="paste" id="yahoo" hidden>
+        <summary>Import from Yahoo Fantasy</summary>
+        <p class="hint">Connect your Yahoo Fantasy account to choose one of your NFL teams. Our server reads your roster; the lineup you choose is saved in this browser.</p>
+        <button id="yahoo-connect" type="button" class="secondary">Connect Yahoo</button>
+        <button id="yahoo-find" type="button" class="secondary" hidden>Choose a team</button>
+        <button id="yahoo-disconnect" type="button" class="secondary" hidden>Disconnect Yahoo</button>
+        <ul id="yahoo-teams" class="league-list" aria-label="Your Yahoo teams"></ul>
+      </details>
+      <p id="yahoo-status" class="hint import-status" role="status"></p>
+      <button id="yahoo-update" type="button" class="secondary wide" hidden>Update from Yahoo</button>
+
       <details class="paste">
         <summary>Paste a roster instead</summary>
         <label for="paste" class="hint">One player per line, or <code>name, team, slot</code>. Use BN, Bench or IR for reserves.</label>
@@ -72,7 +83,8 @@
         <button id="example" type="button" class="secondary">Try an example lineup</button>
         <button id="clear" type="button" class="secondary" hidden>Clear lineup</button>
       </div>
-      <p class="hint">No account needed. Your lineup stays in this browser and is never sent to our servers.</p>
+      <p class="hint">No Watchlist account needed. Your saved lineup stays in this browser.</p>
+      <p id="yahoo-privacy" class="hint" hidden>If you connect Yahoo, our server reads your roster and keeps an encrypted connection for up to 30 days; it does not save your roster.</p>
     </details>
   </section>
 

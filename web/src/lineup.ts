@@ -15,6 +15,7 @@ export interface DirectoryEntry {
   position: string;
   number?: string;
   active?: boolean;
+  yahoo_id?: string;
 }
 
 export type Directory = Record<string, DirectoryEntry>;

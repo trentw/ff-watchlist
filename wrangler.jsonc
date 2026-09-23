@@ -1,8 +1,12 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ff-watchlist",
+  "main": "./worker/index.js",
   "compatibility_date": "2026-09-01",
-  "assets": { "directory": "./web/dist" },
+  "assets": { "directory": "./web/dist", "binding": "ASSETS", "run_worker_first": ["/api/*"] },
+  "vars": { "APP_ORIGIN": "https://ffwatchlist.com", "YAHOO_REDIRECT_URI": "https://ffwatchlist.com/api/yahoo/callback", "YAHOO_ENABLED": "false" },
+  "durable_objects": { "bindings": [{ "name": "YAHOO_SESSIONS", "class_name": "YahooSession" }] },
+  "migrations": [{ "tag": "yahoo-session-v1", "new_sqlite_classes": ["YahooSession"] }],
   "workers_dev": false,
   "routes": [{ "pattern": "ffwatchlist.com", "custom_domain": true }]
 }

@@ -1,6 +1,6 @@
 # Deploying
 
-The site is a directory of static files, so any static host works. This repository deploys to [Cloudflare Workers static assets](https://developers.cloudflare.com/workers/static-assets/) from GitHub Actions.
+The public site can run as static files on any host. This repository deploys them with [Cloudflare Workers static assets](https://developers.cloudflare.com/workers/static-assets/) from GitHub Actions. The Worker also contains an optional Yahoo API endpoint, disabled by default; static-only hosts cannot use that import.
 
 ## What the workflows do
 
@@ -12,6 +12,8 @@ The site is a directory of static files, so any static host works. This reposito
 1. Create a Cloudflare API token from the *Edit Cloudflare Workers* template, limited to your account and the zone of your domain.
 2. Add repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
 3. In `wrangler.jsonc`, set `name` and replace the `routes` pattern with a hostname in a Cloudflare zone you control, or remove `routes` to use only the `workers.dev` address.
+
+The Yahoo endpoint requires separate approval, OAuth configuration, Durable Object binding, and Worker secrets. Do not enable it from this deployment guide; follow the [Yahoo integration checklist](yahoo-import.md).
 
 ## Analytics
 

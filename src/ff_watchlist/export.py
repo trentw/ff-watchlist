@@ -45,6 +45,11 @@ def slim_directory(directory: dict[str, Any]) -> dict[str, dict[str, Any]]:
             entry["number"] = str(row["number"])
         if isinstance(row.get("active"), bool):
             entry["active"] = row["active"]
+        yahoo_id = row.get("yahoo_id")
+        if isinstance(yahoo_id, int) and not isinstance(yahoo_id, bool) and yahoo_id > 0:
+            entry["yahoo_id"] = str(yahoo_id)
+        elif isinstance(yahoo_id, str) and yahoo_id.isascii() and yahoo_id.isdecimal() and int(yahoo_id) > 0:
+            entry["yahoo_id"] = str(int(yahoo_id))
         slim[str(player_id)] = entry
     return slim
 
