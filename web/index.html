@@ -3,98 +3,158 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>FF Watchlist — Matchups to watch</title>
-<meta name="description" content="Find the NFL games that matter to your fantasy lineup, ranked within each kickoff window.">
+<title>FF Watchlist · Which game has your points?</title>
+<meta name="description" content="Add your fantasy lineup and see which NFL games have your points, ranked within each kickoff window.">
 <meta property="og:title" content="FF Watchlist">
-<meta property="og:description" content="Find the NFL games that matter to your fantasy lineup.">
+<meta property="og:description" content="Which game has your points? NFL games ranked by your fantasy lineup.">
 <meta property="og:type" content="website">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:image" content="https://ffwatchlist.com/icons/social-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="FF Watchlist: which game has your points?">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#1d1a17">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="icons/favicon-16.png" sizes="16x16" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" href="fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="styles.css">
 <script type="module" src="app.js"></script>
 </head>
-<body><main>
+<body>
 <header class="masthead">
-  <div class="brand">
-    <span class="eyebrow">FANTASY FOOTBALL · THE SUNDAY GAME PLAN</span>
-    <h1>Matchups <em>to watch.</em></h1>
-    <p>Your starters. Your screen. Every game that matters.</p>
-  </div>
-  <div class="scoreboard" aria-label="Week and scoring">
-    <div><span>WEEK</span><strong id="board-week">––</strong></div>
-    <div><span>SEASON</span><strong id="board-season">––––</strong></div>
-    <div><span>SCORING</span><strong id="board-scoring">––</strong></div>
+  <div class="bar">
+    <a class="brand" href="./"><img src="icons/logo-64.png" alt="" width="32" height="32"><span class="wordmark">FF Watchlist</span></a>
+    <div class="scoreboard" aria-label="Week and scoring">
+      <div><span>Week</span><strong id="board-week">––</strong></div>
+      <div class="board-season"><span>Season</span><strong id="board-season">––––</strong></div>
+      <div><span class="board-scoring-label">Scoring</span><strong id="board-scoring">––</strong></div>
+    </div>
   </div>
 </header>
 
-<div class="workspace">
-  <section id="controls" class="controls" aria-label="Your lineup">
-    <details id="editor" open>
-      <summary><span class="panel-kicker"><span>01 / SET YOUR LINEUP</span></span><span id="editor-summary" class="editor-summary">Set your lineup</span></summary>
-
-      <div class="search-box">
-        <label for="search">Add a player</label>
-        <input id="search" type="search" role="combobox" aria-expanded="false" aria-controls="search-results" aria-autocomplete="list"
-               autocomplete="off" spellcheck="false" placeholder="Start typing a name…" disabled>
-        <ul id="search-results" role="listbox" aria-label="Matching players" hidden></ul>
-        <label class="check"><input id="add-to-bench" type="checkbox"> Add to bench</label>
-      </div>
-
-      <ul id="roster" class="roster" aria-label="Players in your lineup"></ul>
-      <p id="roster-empty" class="hint">No players yet. Search above, paste a roster below, or try the example.</p>
-
-      <label for="scoring">Scoring</label>
-      <select id="scoring">
-        <option value="std">Standard</option>
-        <option value="half">Half-PPR</option>
-        <option value="ppr">PPR</option>
-      </select>
-
-      <details class="paste" id="sleeper">
-        <summary>Import from Sleeper</summary>
-        <label for="sleeper-username" class="hint">Your Sleeper username. It goes from your browser straight to Sleeper’s public API; this site never sees it.</label>
-        <div class="inline-form">
-          <input id="sleeper-username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="username">
-          <button id="sleeper-find" type="button" class="secondary">Find leagues</button>
-        </div>
-        <ul id="sleeper-leagues" class="league-list" aria-label="Your Sleeper leagues"></ul>
-      </details>
-      <p id="sleeper-status" class="hint import-status" role="status"></p>
-      <button id="sleeper-update" type="button" class="secondary wide" hidden></button>
-
-      <details class="paste">
-        <summary>Paste a roster instead</summary>
-        <label for="paste" class="hint">One player per line, or <code>name, team, slot</code>. Use BN, Bench or IR for reserves.</label>
-        <textarea id="paste" rows="7" placeholder="QB  Caleb Williams  CHI - QB&#10;BN  Justin Jefferson  MIN - WR"></textarea>
-        <button id="paste-add" type="button" class="secondary">Add these players</button>
-      </details>
-
-      <div class="actions">
-        <button id="example" type="button" class="secondary">Try an example lineup</button>
-        <button id="clear" type="button" class="secondary" hidden>Clear lineup</button>
-      </div>
-      <p class="hint">No account needed. Your lineup stays in this browser and is never sent to our servers.</p>
-    </details>
-  </section>
-
-  <section class="results" aria-label="Your matchups">
-    <div class="result-heading">
-      <div><span class="eyebrow">02 / PICK YOUR GAME</span><h2>Your watch list</h2></div>
-      <button id="share" type="button" class="secondary" hidden>Copy share link</button>
+<main id="workspace" class="workspace is-empty">
+  <div class="side">
+    <div class="intro">
+      <h1>Which game has your points?</h1>
+      <p>Add your fantasy lineup. We rank this week’s NFL games by how many of your projected points are on the field, grouped by kickoff.</p>
     </div>
-    <p id="share-status" class="share-status" role="status"></p>
-    <p id="status" role="status">Loading this week’s games…</p>
-    <div id="issues" aria-live="polite"></div>
-    <div id="placeholder" class="field-empty">
-      <div class="yard-numbers" aria-hidden="true"><span>10</span><span>20</span><span>30</span><span>40</span><span>50</span></div>
-      <div class="empty-message"><span class="eyebrow">READY WHEN YOU ARE</span><h3 id="placeholder-title">Set the lineup.<br>Find your game.</h3><p id="placeholder-text">Add your starters to put your Sunday on the board.</p></div>
+
+    <section id="controls" class="panel" aria-label="Your lineup">
+      <details id="editor" open>
+        <summary>
+          <div class="panel-head"><h2>Your lineup</h2><span id="lineup-count" class="count">No players yet</span></div>
+          <span class="edit" aria-hidden="true">Edit</span>
+        </summary>
+
+        <div id="methods" class="segmented" role="group" aria-label="How to add players">
+          <button type="button" data-method="search" aria-pressed="true">Search</button>
+          <button type="button" data-method="sleeper" aria-pressed="false">Sleeper</button>
+          <button type="button" data-method="paste" aria-pressed="false">Paste a list</button>
+        </div>
+
+        <div id="method-search" class="method search-box">
+          <label for="search">Add a player</label>
+          <div class="search-field">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="search" type="search" role="combobox" aria-expanded="false" aria-controls="search-results" aria-autocomplete="list"
+                   autocomplete="off" spellcheck="false" placeholder="Start typing a name…" disabled>
+          </div>
+          <ul id="search-results" role="listbox" aria-label="Matching players" hidden></ul>
+          <div class="search-foot">
+            <span id="search-hint" class="hint">Starters first. Bench players only break ties.</span>
+            <label class="check"><input id="add-to-bench" type="checkbox"> Add to bench</label>
+          </div>
+        </div>
+
+        <div id="method-sleeper" class="method" hidden>
+          <label for="sleeper-username">Sleeper username</label>
+          <div class="inline-form">
+            <input id="sleeper-username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="username">
+            <button id="sleeper-find" type="button" class="primary">Find leagues</button>
+          </div>
+          <p class="hint">Goes from your browser straight to Sleeper’s public API. This site never sees it.</p>
+          <ul id="sleeper-leagues" class="league-list" aria-label="Your Sleeper leagues"></ul>
+        </div>
+
+        <div id="method-paste" class="method" hidden>
+          <label for="paste">One player per line</label>
+          <textarea id="paste" rows="5" placeholder="Caleb Williams, CHI, QB&#10;Justin Jefferson, MIN, BN"></textarea>
+          <div class="paste-foot">
+            <span class="hint">Name, team, slot. BN, Bench or IR for reserves.</span>
+            <button id="paste-add" type="button" class="primary">Add players</button>
+          </div>
+        </div>
+
+        <p id="sleeper-status" class="hint import-status" role="status"></p>
+        <button id="sleeper-update" type="button" class="secondary" hidden></button>
+        <div id="issues" class="notes" aria-live="polite"></div>
+
+        <div id="roster-groups" hidden>
+          <h3 class="group-label">Starters</h3>
+          <ul id="roster-starters" class="roster" aria-label="Starters"></ul>
+          <h3 id="bench-label" class="group-label">Bench · breaks ties</h3>
+          <ul id="roster-bench" class="roster" aria-label="Bench"></ul>
+        </div>
+
+        <div class="scoring">
+          <span id="scoring-label" class="field-label">Scoring</span>
+          <div id="scoring" class="segmented" role="group" aria-labelledby="scoring-label">
+            <button type="button" data-scoring="std" aria-pressed="false">Standard</button>
+            <button type="button" data-scoring="half" aria-pressed="false">Half-PPR</button>
+            <button type="button" data-scoring="ppr" aria-pressed="false">PPR</button>
+          </div>
+        </div>
+
+        <div id="more" class="more" hidden>
+          <div class="more-buttons">
+            <button type="button" class="secondary" data-method="sleeper">Import from Sleeper</button>
+            <button type="button" class="secondary" data-method="paste">Paste a list</button>
+          </div>
+          <div class="more-foot">
+            <span class="private"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Never sent to our servers</span>
+            <button id="clear" type="button" class="text">Clear lineup</button>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <div class="welcome">
+      <button id="example" type="button" class="link">Just looking? Try an example lineup<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+
+  <section class="field" aria-labelledby="field-title">
+    <div class="field-head">
+      <div>
+        <h2 id="field-title">This week’s watch list</h2>
+        <p id="status" role="status">Loading this week’s games…</p>
+      </div>
+      <div class="share">
+        <button id="share" type="button" class="secondary on-turf" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg><span>Share lineup</span></button>
+        <p id="share-status" class="share-status" role="status"></p>
+      </div>
+    </div>
+    <div id="placeholder" class="window placeholder">
+      <div class="rail" aria-hidden="true"></div>
+      <div class="window-body">
+        <p id="placeholder-title" class="preview-title">This week’s games will appear here.</p>
+        <p id="placeholder-text" class="preview-text"></p>
+      </div>
     </div>
     <div id="results"></div>
+    <p id="source" class="source"></p>
   </section>
-</div>
+</main>
 
-<footer>
-  Kickoff times are shown in your timezone. A hobby project, not affiliated with the NFL or any fantasy platform.
-  Names, logos and photos belong to their owners. Visits are counted with cookie-free Cloudflare Web Analytics. <a href="https://github.com/trentw/ff-watchlist">Source and removal requests</a>.
+<footer class="footer">
+  <ul class="promises">
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span><strong>Your lineup stays yours</strong>It lives in this browser and is never sent to our servers.</span></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10 10 0 0 1 12 5c6 0 9.5 7 9.5 7a17 17 0 0 1-2.6 3.4M6.6 6.6C3.9 8.4 2.5 12 2.5 12S6 19 12 19a9.6 9.6 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg><span><strong>No accounts, ads or tracking</strong>Just a cookie-free visit count.</span></li>
+    <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg><span><strong>Open source</strong><a href="https://github.com/trentw/ff-watchlist">Read the code or contribute on GitHub</a></span></li>
+  </ul>
+  <p>A hobby project, not affiliated with the NFL or any fantasy platform. Kickoff times are in your timezone.</p>
 </footer>
-</main></body>
+</body>
 </html>

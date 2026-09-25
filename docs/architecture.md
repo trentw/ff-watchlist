@@ -25,6 +25,8 @@ TypeScript with no runtime dependencies, bundled by esbuild.
 - `search.ts`, `roster.ts` provide player search, the saved lineup and share links.
 - `sleeper.ts` imports a lineup from Sleeper's public API, called directly from the browser; it is the only request the page makes to a host other than its own.
 - `data.ts` loads the bundle; `app.ts` wires the page. Pasted and provider text is only ever written as text nodes.
+- `index.html` and `styles.css` hold the markup and design; fonts are served from `web/fonts/` (see `THIRD_PARTY.md`), so the page loads nothing from font services.
+- `web/icons/` holds the site icons and share image. Their full-size originals and the steps to regenerate them are in `web/icons/source/`, which the build does not publish.
 
 ## Two implementations, one behavior
 

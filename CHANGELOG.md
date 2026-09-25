@@ -22,11 +22,29 @@ The format follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/
 - Shared parity cases hold the TypeScript ranking and lineup parsing to the
   Python reference implementations.
 - Contributor guidance and opt-in code-quality and commit-message hooks.
+- Home-screen and app icons, a web app manifest and a social share image;
+  their full-size sources and regeneration steps are in `web/icons/source/`.
 
 ### Changed
 
 - The content security policy allows Cloudflare's cookie-free Web Analytics
   beacon, and the page footer says visits are counted.
+- New page design. One tagline, one path for adding players (search, Sleeper
+  or a pasted list), buttons of one size, and a field that lists kickoff
+  windows down a sideline. Self-hosted Archivo, Alfa Slab One and Graduate
+  replace the mixed system fonts, and the site icon is a retro TV.
+- Before any players are added, the field previews this week's games with a
+  prompt to add players. Games without any of your players are listed the same
+  way under each kickoff.
+- Jersey numbers stay visible on every player: on the corner of a headshot,
+  or filling the frame when there is no photo.
+- A player without a projection is marked on their row with a dash instead of
+  a banner at the top of the page. Games with only bench players shrink to one
+  line instead of showing a 0.0 total.
+- The projection source and its age move to a footnote under the games.
+- The footer states the privacy commitments and links to the source.
+- The example lineup is a real league's roster. The share button reads
+  "Share lineup", and its confirmation appears beside it and fades.
 
 ### Removed
 
@@ -37,3 +55,5 @@ The format follows [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/
 
 - Team aliases such as `JAC` and `WSH` on players or schedule rows now match
   projections and games instead of leaving the player unmatched.
+- Kickoff windows show their start time in the viewer's timezone with
+  minutes, so half-hour offsets no longer round down to the hour.

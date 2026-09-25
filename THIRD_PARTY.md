@@ -12,6 +12,16 @@ The MIT license covers this project's code and original assets only. Data, photo
 | ESPN scoreboard (`site.api.espn.com`) | Schedule, kickoff times, networks | Undocumented public endpoint. |
 | Sleeper image CDN (`sleepercdn.com`) | Optional team logos and headshots | Linked from the owner's CDN at display time; never copied into this repository or a deployment. |
 
+## Fonts
+
+The page serves its own copies of three typefaces from `web/fonts/`, so it makes no requests to a font service. Each is licensed under the SIL Open Font License 1.1, not the MIT license, and its license text ships beside it.
+
+| Typeface | Used for | License |
+|---|---|---|
+| Archivo (Omnibus-Type) | All text and numbers | `web/fonts/OFL-archivo.txt` |
+| Alfa Slab One (JM Solé) | Wordmark and main headline | `web/fonts/OFL-alfaslabone.txt` |
+| Graduate (Eduardo Tunni) | Jersey numbers | `web/fonts/OFL-graduate.txt` |
+
 ## Analytics
 
 The hosted site uses Cloudflare Web Analytics, which Cloudflare adds at the edge. It counts page views and load timings without cookies and never sees a lineup. It is not part of this repository's code; the content security policy in `web/_headers` is what permits it.
