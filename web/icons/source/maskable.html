@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Maskable icon</title>
+<style>
+/* The art shrinks to 82% on the icon's own green so a circular mask keeps the antennas. */
+html,body{margin:0;width:512px;height:512px;overflow:hidden;background:#215e3b}
+div{position:absolute;inset:46px;background:url(base-icon-dark.png) center/cover;-webkit-mask-image:radial-gradient(closest-side,#000 90%,transparent 100%)}
+</style>
+</head>
+<body><div></div></body>
+</html>
